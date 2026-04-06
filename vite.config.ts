@@ -32,6 +32,7 @@ export default defineConfig({
     alias: {
       '@api': '/src/api',
       '@components': '/src/components',
+      '@modals': '/src/components/modals',
       '@utils': '/src/utils',
       '@styles': '/src/styles',
     },

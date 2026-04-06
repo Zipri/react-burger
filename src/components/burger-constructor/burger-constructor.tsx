@@ -9,11 +9,13 @@ import type { TIngredient } from '@/api/ingredients/types';
 type TBurgerConstructorProps = {
   ingredients: TIngredient[];
   onRemoveIngredient: (ingredient: TIngredient) => void;
+  onOrderClick: () => void;
 };
 
 export const BurgerConstructor = ({
   ingredients,
   onRemoveIngredient,
+  onOrderClick,
 }: TBurgerConstructorProps): React.JSX.Element => {
   const totalPrice = useMemo(() => {
     return ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
@@ -36,12 +38,14 @@ export const BurgerConstructor = ({
               ))}
             </ul>
           </div>
-          <BurgerFooter totalPrice={totalPrice} canOrder={canOrder} />
+          <BurgerFooter
+            onOrderClick={onOrderClick}
+            totalPrice={totalPrice}
+            canOrder={canOrder}
+          />
         </>
       ) : (
-        <p className={`${styles.placeholder} text text_type_main-default`}>
-          Добавьте ингредиенты
-        </p>
+        <p className="text text_type_main-default">Добавьте ингредиенты</p>
       )}
     </section>
   );

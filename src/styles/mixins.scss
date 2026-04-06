@@ -5,3 +5,14 @@
     color: var(--text-primary-color);
     font-family: 'Jet Brains Mono', serif;
 }
+
+@mixin ellipsis($linesCount, $word-break: normal) {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: $linesCount;
+    line-clamp: $linesCount;
+    -webkit-box-orient: vertical;
+    width: 100%;
+    white-space: break-spaces !important;
+    word-break: $word-break;
+}

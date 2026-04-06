@@ -1,0 +1,1 @@
+export { IngredientInfoModal } from './ingredientInfo';

@@ -24,6 +24,7 @@
       "@/*": ["src/*"],
       "@api/*": ["src/api/*"],
       "@components/*": ["src/components/*"],
+      "@modals/*": ["src/components/modals/*"],
       "@contexts/*": ["src/contexts/*"],
       "@hocs/*": ["src/hocs/*"],
       "@hooks/*": ["src/hooks/*"],

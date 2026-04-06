@@ -1,10 +1,14 @@
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { useEffect, useState } from 'react';
+import { IngredientInfoModal } from '@modals/ingredientInfo';
+import { OrderDetailsModal } from '@modals/orderDetails';
+import { useCallback, useEffect, useState } from 'react';
+import { v1 } from 'uuid';
 
 import styles from './app.module.css';
 
+import type { TUuid } from '@/api/base/types';
 import { ingredientsApi } from '@/api/ingredients';
 import type { TIngredient } from '@/api/ingredients/types';
 
@@ -16,16 +20,41 @@ export const App = (): React.JSX.Element => {
   const [error, setError] = useState<string>('');
   //#endregion
 
-  //#region handlers
-  const handleSelectIngredient = (ingredient: TIngredient) => {
-    setSelectedIngredients([...selectedIngredients, ingredient]);
-  };
+  //#region modal Ingredient state
+  const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
+  const [isIngredientModalOpen, setIsIngredientModalOpen] = useState<boolean>(false);
 
-  const handleRemoveIngredient = (ingredient: TIngredient) => {
-    setSelectedIngredients(
-      selectedIngredients.filter((item) => item._id !== ingredient._id)
-    );
-  };
+  const openIngredientModal = useCallback((ingredient: TIngredient) => {
+    setSelectedIngredient(ingredient);
+    setIsIngredientModalOpen(true);
+  }, []);
+
+  const handleCloseIngredientModal = useCallback(() => {
+    setIsIngredientModalOpen(false);
+    setSelectedIngredient(null);
+  }, []);
+  //#endregion
+
+  //#region modal Order state
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
+  const [orderNumber] = useState<TUuid>(v1().slice(0, 10) as TUuid);
+  const openOrderModal = useCallback(() => {
+    setIsOrderModalOpen(true);
+  }, []);
+  const handleCloseOrderModal = useCallback(() => {
+    setIsOrderModalOpen(false);
+  }, []);
+  //#endregion
+
+  //#region handlers
+  const handleSelectIngredient = useCallback((ingredient: TIngredient) => {
+    setSelectedIngredients((prev) => [...prev, ingredient]);
+    openIngredientModal(ingredient);
+  }, []);
+
+  const handleRemoveIngredient = useCallback((ingredient: TIngredient) => {
+    setSelectedIngredients((prev) => prev.filter((item) => item._id !== ingredient._id));
+  }, []);
   //#endregion
 
   useEffect(() => {
@@ -45,28 +74,41 @@ export const App = (): React.JSX.Element => {
   }, []);
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-        Соберите бургер
-      </h1>
-      {isLoading && <p className="text text_type_main-default pl-5">Загрузка...</p>}
-      {!isLoading && error && (
-        <p className="text text_type_main-default pl-5">{error}</p>
-      )}
-      {!isLoading && !error && (
-        <main className={`${styles.main} pl-5 pr-5`}>
-          <BurgerIngredients
-            ingredients={ingredients}
-            onSelectIngredient={handleSelectIngredient}
-          />
-          <BurgerConstructor
-            ingredients={selectedIngredients}
-            onRemoveIngredient={handleRemoveIngredient}
-          />
-        </main>
-      )}
-    </div>
+    <>
+      <IngredientInfoModal
+        isOpen={isIngredientModalOpen}
+        selectedIngredient={selectedIngredient}
+        handleCloseIngredientModal={handleCloseIngredientModal}
+      />
+      <OrderDetailsModal
+        isOpen={isOrderModalOpen}
+        orderNumber={orderNumber}
+        onClose={handleCloseOrderModal}
+      />
+      <div className={styles.app}>
+        <AppHeader />
+        <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+          Соберите бургер
+        </h1>
+        {isLoading && <p className="text text_type_main-default pl-5">Загрузка...</p>}
+        {!isLoading && error && (
+          <p className="text text_type_main-default pl-5">{error}</p>
+        )}
+        {!isLoading && !error && (
+          <main className={`${styles.main} pl-5 pr-5`}>
+            <BurgerIngredients
+              ingredients={ingredients}
+              onSelectIngredient={handleSelectIngredient}
+            />
+            <BurgerConstructor
+              ingredients={selectedIngredients}
+              onRemoveIngredient={handleRemoveIngredient}
+              onOrderClick={openOrderModal}
+            />
+          </main>
+        )}
+      </div>
+    </>
   );
 };
 
