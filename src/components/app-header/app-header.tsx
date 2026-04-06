@@ -5,7 +5,7 @@ import {
   ProfileIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 
-import styles from './app-header.module.css';
+import styles from './app-header.module.scss';
 
 export const AppHeader = (): React.JSX.Element => {
   return (
