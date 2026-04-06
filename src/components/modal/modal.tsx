@@ -1,5 +1,5 @@
 import { ModalOverlay } from '@components/modal-overlay';
-import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
+import { CloseIcon, Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -9,12 +9,14 @@ type TModalProps = {
   title?: string;
   onClose: () => void;
   children: React.ReactNode;
+  isLoading?: boolean;
 };
 
 export const Modal = ({
   title,
   onClose,
   children,
+  isLoading = false,
 }: TModalProps): React.JSX.Element | null => {
   const modalRoot = document.getElementById('modals');
 
@@ -39,16 +41,19 @@ export const Modal = ({
   return createPortal(
     <>
       <ModalOverlay onClose={onClose} />
-      <section className={styles.modal} role="dialog" aria-modal="true">
-        <header className={styles.header}>
-          {title ? <h2 className="text text_type_main-large">{title}</h2> : <span />}
-          <button type="button" className={styles.closeButton} onClick={onClose}>
-            <CloseIcon type="primary" />
-          </button>
-        </header>
+      {isLoading && <Preloader />}
+      {!isLoading && (
+        <section className={styles.modal} role="dialog" aria-modal="true">
+          <header className={styles.header}>
+            {title ? <h2 className="text text_type_main-large">{title}</h2> : <span />}
+            <button type="button" className={styles.closeButton} onClick={onClose}>
+              <CloseIcon type="primary" />
+            </button>
+          </header>
 
-        <div className={styles.content}>{children}</div>
-      </section>
+          <div className={styles.content}>{children}</div>
+        </section>
+      )}
     </>,
     modalRoot
   );

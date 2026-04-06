@@ -46,13 +46,12 @@ export const IngredientInfoModal = ({
     return <></>;
   }
 
-  // TODO: Добавить лоадер на всю страницу
-  if (!isImageLoaded) {
-    return <></>;
-  }
-
   return (
-    <Modal title="Детали ингредиента" onClose={handleCloseIngredientModal}>
+    <Modal
+      isLoading={!isImageLoaded}
+      title="Детали ингредиента"
+      onClose={handleCloseIngredientModal}
+    >
       <div className={styles.content}>
         <img
           src={selectedIngredient.image_large}

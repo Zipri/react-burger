@@ -9,13 +9,21 @@ import { useTab } from '@/utils/hooks';
 
 type TBurgerIngredientsProps = {
   ingredients: TIngredient[];
+  selectedIngredients: TIngredient[];
   onSelectIngredient: (ingredient: TIngredient) => void;
 };
 
 export const BurgerIngredients = ({
   ingredients,
+  selectedIngredients,
   onSelectIngredient,
 }: TBurgerIngredientsProps): React.JSX.Element => {
+  const { currentTab, sectionRefs, contentRef, scrollToSection, handleScroll } =
+    useTab<TIngredientType>({
+      tabs: ['bun', 'sauce', 'main'],
+      initialTab: 'bun',
+    });
+
   const groupedIngredients = useMemo(
     () => ({
       bun: ingredients.filter((ingredient) => ingredient.type === 'bun'),
@@ -25,11 +33,22 @@ export const BurgerIngredients = ({
     [ingredients]
   );
 
-  const { currentTab, sectionRefs, contentRef, scrollToSection, handleScroll } =
-    useTab<TIngredientType>({
-      tabs: ['bun', 'sauce', 'main'],
-      initialTab: 'bun',
+  const ingredientsCountMap = useMemo(() => {
+    const map: Record<string, number> = {};
+
+    selectedIngredients.forEach((ingredient) => {
+      if (ingredient.type !== 'bun') {
+        map[ingredient._id] = (map[ingredient._id] ?? 0) + 1;
+      }
     });
+
+    const bun = selectedIngredients.find((ingredient) => ingredient.type === 'bun');
+    if (bun) {
+      map[bun._id] = 2;
+    }
+
+    return map;
+  }, [selectedIngredients]);
 
   return (
     <section className={styles.burger_ingredients}>
@@ -47,6 +66,7 @@ export const BurgerIngredients = ({
               <BurgerIngredient
                 key={ingredient._id}
                 ingredient={ingredient}
+                count={ingredientsCountMap[ingredient._id] ?? 0}
                 onSelectIngredient={onSelectIngredient}
               />
             ))}
@@ -59,6 +79,7 @@ export const BurgerIngredients = ({
               <BurgerIngredient
                 key={ingredient._id}
                 ingredient={ingredient}
+                count={ingredientsCountMap[ingredient._id] ?? 0}
                 onSelectIngredient={onSelectIngredient}
               />
             ))}
@@ -71,6 +92,7 @@ export const BurgerIngredients = ({
               <BurgerIngredient
                 key={ingredient._id}
                 ingredient={ingredient}
+                count={ingredientsCountMap[ingredient._id] ?? 0}
                 onSelectIngredient={onSelectIngredient}
               />
             ))}

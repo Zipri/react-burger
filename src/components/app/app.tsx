@@ -1,6 +1,7 @@
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
+import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { IngredientInfoModal } from '@modals/ingredientInfo';
 import { OrderDetailsModal } from '@modals/orderDetails';
 import { useCallback, useEffect, useState } from 'react';
@@ -47,10 +48,21 @@ export const App = (): React.JSX.Element => {
   //#endregion
 
   //#region handlers
-  const handleSelectIngredient = useCallback((ingredient: TIngredient) => {
-    setSelectedIngredients((prev) => [...prev, ingredient]);
-    openIngredientModal(ingredient);
-  }, []);
+  const handleSelectIngredient = useCallback(
+    (ingredient: TIngredient) => {
+      setSelectedIngredients((prev) => {
+        if (ingredient.type === 'bun') {
+          const withoutBuns = prev.filter((item) => item.type !== 'bun');
+          return [ingredient, ...withoutBuns];
+        }
+
+        return [...prev, ingredient];
+      });
+
+      openIngredientModal(ingredient);
+    },
+    [openIngredientModal]
+  );
 
   const handleRemoveIngredient = useCallback((ingredient: TIngredient) => {
     setSelectedIngredients((prev) => prev.filter((item) => item._id !== ingredient._id));
@@ -90,7 +102,7 @@ export const App = (): React.JSX.Element => {
         <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
           Соберите бургер
         </h1>
-        {isLoading && <p className="text text_type_main-default pl-5">Загрузка...</p>}
+        {isLoading && <Preloader />}
         {!isLoading && error && (
           <p className="text text_type_main-default pl-5">{error}</p>
         )}
@@ -98,6 +110,7 @@ export const App = (): React.JSX.Element => {
           <main className={`${styles.main} pl-5 pr-5`}>
             <BurgerIngredients
               ingredients={ingredients}
+              selectedIngredients={selectedIngredients}
               onSelectIngredient={handleSelectIngredient}
             />
             <BurgerConstructor

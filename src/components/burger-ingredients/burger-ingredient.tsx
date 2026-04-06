@@ -6,11 +6,13 @@ import type { TIngredient } from '@/api/ingredients/types';
 
 type TBurgerIngredientProps = {
   ingredient: TIngredient;
+  count: number;
   onSelectIngredient: (ingredient: TIngredient) => void;
 };
 
 export const BurgerIngredient = ({
   ingredient,
+  count,
   onSelectIngredient,
 }: TBurgerIngredientProps): React.JSX.Element => {
   return (
@@ -20,7 +22,9 @@ export const BurgerIngredient = ({
         className={styles.ingredient_button}
         onClick={() => onSelectIngredient(ingredient)}
       >
-        <Counter count={0} size="default" extraClass={styles.counter} />
+        {count > 0 && (
+          <Counter count={count} size="default" extraClass={styles.counter} />
+        )}
         <img
           src={ingredient.image}
           alt={ingredient.name}
