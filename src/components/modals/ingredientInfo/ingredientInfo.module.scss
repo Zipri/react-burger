@@ -16,7 +16,6 @@
 }
 
 .name {
-    @include ellipsis(2);
     max-width: 520px;
     margin-bottom: 20px;
 }

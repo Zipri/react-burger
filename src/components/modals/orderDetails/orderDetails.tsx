@@ -2,6 +2,7 @@ import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
 
 import styles from './orderDetails.module.scss';
 
+import { EllipsisText } from '@/components/common';
 import { Modal } from '@/components/modal/modal';
 
 type TOrderDetailsModalProps = {
@@ -22,9 +23,12 @@ export const OrderDetailsModal = ({
   return (
     <Modal title="" onClose={onClose}>
       <div className={styles.content}>
-        <p className={`${styles.orderNumber} text text_type_digits-large`}>
+        <EllipsisText
+          maxLines={1}
+          className={`${styles.orderNumber} text text_type_digits-large`}
+        >
           {orderNumber}
-        </p>
+        </EllipsisText>
         <p className="text text_type_main-medium mt-8">идентификатор заказа</p>
 
         <div className={`${styles.iconWrapper} mt-15 mb-15`}>

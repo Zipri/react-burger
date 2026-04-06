@@ -8,7 +8,7 @@ import { v1 } from 'uuid';
 
 import styles from './app.module.css';
 
-import type { TUuid } from '@/api/base/types';
+import type { TID } from '@/api/base/types';
 import { ingredientsApi } from '@/api/ingredients';
 import type { TIngredient } from '@/api/ingredients/types';
 
@@ -37,7 +37,7 @@ export const App = (): React.JSX.Element => {
 
   //#region modal Order state
   const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
-  const [orderNumber] = useState<TUuid>(v1().slice(0, 10) as TUuid);
+  const [orderNumber] = useState<TID>(v1());
   const openOrderModal = useCallback(() => {
     setIsOrderModalOpen(true);
   }, []);

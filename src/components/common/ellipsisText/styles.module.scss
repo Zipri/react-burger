@@ -1,0 +1,37 @@
+@use '@styles/mixins' as *;
+
+.ellipsisText1Lines {
+    @include ellipsis(1);
+}
+
+.ellipsisText2Lines {
+    @include ellipsis(2);
+}
+
+.ellipsisText3Lines {
+    @include ellipsis(3);
+}
+
+.ellipsisText4Lines {
+    @include ellipsis(4);
+}
+
+.ellipsisText5Lines {
+    @include ellipsis(5);
+}
+
+.ellipsisText6Lines {
+    @include ellipsis(6);
+}
+
+.ellipsisBreakAll {
+    word-break: break-all;
+}
+
+.withCopy {
+    cursor: pointer;
+
+    &:active {
+        font-weight: 600;
+    }
+}

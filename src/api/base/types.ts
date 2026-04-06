@@ -3,4 +3,4 @@ export type TApiErrorResponse = {
   message?: string;
 };
 
-export type TUuid = string;
+export type TID = string;

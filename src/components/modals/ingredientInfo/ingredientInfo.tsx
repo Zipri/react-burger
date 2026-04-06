@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import styles from './ingredientInfo.module.scss';
 
 import type { TIngredient } from '@/api/ingredients/types';
+import { EllipsisText } from '@/components/common';
 import { Modal } from '@/components/modal';
 
 type TIngredientInfoModalProps = {
@@ -59,9 +60,12 @@ export const IngredientInfoModal = ({
           className={styles.image}
         />
 
-        <p className={`${styles.name} text text_type_main-medium mt-4`}>
+        <EllipsisText
+          maxLines={2}
+          className={`${styles.name} text text_type_main-medium mt-4`}
+        >
           {selectedIngredient.name}
-        </p>
+        </EllipsisText>
 
         <ul className={`${styles.nutritionList} mt-8`}>
           <li className={styles.nutritionItem}>
