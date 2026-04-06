@@ -9,9 +9,18 @@ import { ingredientsApi } from '@/api/ingredients';
 import type { TIngredient } from '@/api/ingredients/types';
 
 export const App = (): React.JSX.Element => {
+  //#region local state
   const [ingredients, setIngredients] = useState<TIngredient[]>([]);
+  const [selectedIngredients, setSelectedIngredients] = useState<TIngredient[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  //#endregion
+
+  //#region handlers
+  const handleSelectIngredient = (ingredient: TIngredient) => {
+    setSelectedIngredients([...selectedIngredients, ingredient]);
+  };
+  //#endregion
 
   useEffect(() => {
     ingredientsApi
@@ -41,7 +50,10 @@ export const App = (): React.JSX.Element => {
       )}
       {!isLoading && !error && (
         <main className={`${styles.main} pl-5 pr-5`}>
-          <BurgerIngredients ingredients={ingredients} />
+          <BurgerIngredients
+            ingredients={ingredients}
+            onSelectIngredient={handleSelectIngredient}
+          />
           <BurgerConstructor ingredients={ingredients} />
         </main>
       )}

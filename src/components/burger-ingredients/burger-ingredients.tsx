@@ -1,51 +1,82 @@
-import { Tab } from '@krgaa/react-developer-burger-ui-components';
+import { useMemo } from 'react';
 
-import type { TIngredient } from '@utils/types';
+import { BurgerIngredient } from './burger-ingredient';
+import { BurgerIngredientsNav } from './burger-ingredients-nav';
+import styles from './burger-ingredients.module.scss';
 
-import styles from './burger-ingredients.module.css';
+import type { TIngredient, TIngredientType } from '@/api/ingredients/types';
+import { useTab } from '@/utils/hooks';
 
 type TBurgerIngredientsProps = {
   ingredients: TIngredient[];
+  onSelectIngredient: (ingredient: TIngredient) => void;
 };
 
 export const BurgerIngredients = ({
   ingredients,
+  onSelectIngredient,
 }: TBurgerIngredientsProps): React.JSX.Element => {
-  console.log(ingredients);
+  const groupedIngredients = useMemo(
+    () => ({
+      bun: ingredients.filter((ingredient) => ingredient.type === 'bun'),
+      sauce: ingredients.filter((ingredient) => ingredient.type === 'sauce'),
+      main: ingredients.filter((ingredient) => ingredient.type === 'main'),
+    }),
+    [ingredients]
+  );
+
+  const { currentTab, sectionRefs, contentRef, scrollToSection, handleScroll } =
+    useTab<TIngredientType>({
+      tabs: ['bun', 'sauce', 'main'],
+      initialTab: 'bun',
+    });
 
   return (
     <section className={styles.burger_ingredients}>
-      <nav>
-        <ul className={styles.menu}>
-          <Tab
-            value="bun"
-            active={true}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Булки
-          </Tab>
-          <Tab
-            value="main"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Начинки
-          </Tab>
-          <Tab
-            value="sauce"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Соусы
-          </Tab>
-        </ul>
-      </nav>
+      <BurgerIngredientsNav currentTab={currentTab} scrollToSection={scrollToSection} />
+
+      <div
+        ref={contentRef}
+        onScroll={handleScroll}
+        className={`${styles.ingredients_content} custom-scroll`}
+      >
+        <section ref={sectionRefs.bun} className={styles.ingredients_section}>
+          <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
+          <ul className={styles.ingredients_list}>
+            {groupedIngredients.bun.map((ingredient) => (
+              <BurgerIngredient
+                key={ingredient._id}
+                ingredient={ingredient}
+                onSelectIngredient={onSelectIngredient}
+              />
+            ))}
+          </ul>
+        </section>
+        <section ref={sectionRefs.sauce} className={styles.ingredients_section}>
+          <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
+          <ul className={styles.ingredients_list}>
+            {groupedIngredients.sauce.map((ingredient) => (
+              <BurgerIngredient
+                key={ingredient._id}
+                ingredient={ingredient}
+                onSelectIngredient={onSelectIngredient}
+              />
+            ))}
+          </ul>
+        </section>
+        <section ref={sectionRefs.main} className={styles.ingredients_section}>
+          <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
+          <ul className={styles.ingredients_list}>
+            {groupedIngredients.main.map((ingredient) => (
+              <BurgerIngredient
+                key={ingredient._id}
+                ingredient={ingredient}
+                onSelectIngredient={onSelectIngredient}
+              />
+            ))}
+          </ul>
+        </section>
+      </div>
     </section>
   );
 };
