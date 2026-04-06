@@ -20,6 +20,12 @@ export const App = (): React.JSX.Element => {
   const handleSelectIngredient = (ingredient: TIngredient) => {
     setSelectedIngredients([...selectedIngredients, ingredient]);
   };
+
+  const handleRemoveIngredient = (ingredient: TIngredient) => {
+    setSelectedIngredients(
+      selectedIngredients.filter((item) => item._id !== ingredient._id)
+    );
+  };
   //#endregion
 
   useEffect(() => {
@@ -54,7 +60,10 @@ export const App = (): React.JSX.Element => {
             ingredients={ingredients}
             onSelectIngredient={handleSelectIngredient}
           />
-          <BurgerConstructor ingredients={ingredients} />
+          <BurgerConstructor
+            ingredients={selectedIngredients}
+            onRemoveIngredient={handleRemoveIngredient}
+          />
         </main>
       )}
     </div>

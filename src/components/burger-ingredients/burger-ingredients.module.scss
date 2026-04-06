@@ -1,10 +1,8 @@
+@use '@styles/mixins' as *;
+
 .burger_ingredients {
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  color: var(--text-primary-color);
-  font-family: 'Jet Brains Mono', serif;
-  padding-bottom: 40px;
+  @include table-burger_wrapper;
+  padding-bottom: 20px;
 }
 
 .menu {
