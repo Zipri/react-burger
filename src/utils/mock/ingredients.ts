@@ -1,6 +1,6 @@
-import type { TIngredient } from '@utils/types.ts';
+import type { TIngredient } from '@/api/ingredients/types';
 
-export const ingredients: TIngredient[] = [
+export const mockIngredients: TIngredient[] = [
   {
     _id: '60666c42cc7b410027a1a9b1',
     name: 'Краторная булка N-200i',
