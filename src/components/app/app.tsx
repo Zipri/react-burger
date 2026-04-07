@@ -1,9 +1,9 @@
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
+import { IngredientInfoModal } from '@components/modals/ingredient-info';
+import { OrderDetailsModal } from '@components/modals/order-details';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { IngredientInfoModal } from '@modals/ingredientInfo';
-import { OrderDetailsModal } from '@modals/orderDetails';
 import { useCallback, useEffect, useState } from 'react';
 import { v1 } from 'uuid';
 

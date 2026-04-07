@@ -10,11 +10,6 @@ class IngredientsApi extends BaseApi {
 
   public async getIngredients(): Promise<TIngredient[]> {
     const response = await this.request<TIngredientsResponse>();
-
-    if (!response.success) {
-      throw new Error('API returned unsuccessful response');
-    }
-
     return response.data;
   }
 }

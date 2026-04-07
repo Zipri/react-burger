@@ -24,6 +24,10 @@ export abstract class BaseApi {
       throw new Error(payload.message || `HTTP error: ${response.status}`);
     }
 
+    if (!payload.success) {
+      throw new Error(payload.message || 'API returned unsuccessful response');
+    }
+
     return payload;
   }
 }
