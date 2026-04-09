@@ -30,7 +30,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': '/src',
+      '@api': '/src/api',
+      '@components': '/src/components',
+      '@modals': '/src/components/modals',
+      '@utils': '/src/utils',
       '@styles': '/src/styles',
     },
   },
@@ -38,7 +41,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         quietDeps: true,
-        silenceDeprecations: ['color-functions'],
+        silenceDeprecations: ['legacy-js-api', 'color-functions'],
       },
     },
   },

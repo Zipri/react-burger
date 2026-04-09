@@ -1,0 +1,1 @@
+export { mockIngredients } from './ingredients';

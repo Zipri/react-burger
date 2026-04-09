@@ -1,0 +1,41 @@
+@use '@styles/mixins' as *;
+
+.burger_constructor {
+  @include table-burger_wrapper;
+  width: 100%;
+  margin-top: 56px;
+  padding-bottom: 20px;
+  justify-content: space-between;
+}
+
+.ingredients_scroll {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.ingredients_list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ingredient_item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.footer {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
+
