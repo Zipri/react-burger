@@ -1,43 +1,24 @@
 import { ConstructorElement } from '@krgaa/react-developer-burger-ui-components';
-import { useMemo } from 'react';
 
 import styles from './burger-constructor.module.scss';
 import { BurgerFooter } from './burger-footer';
 import { BurgerIngredient } from './burger-ingredient';
 
-import type { TIngredient } from '@/api/ingredients/types';
+import {
+  selectConstructorBun,
+  selectConstructorIngredients,
+} from '@/services/constructor/selectors';
+import { useAppSelector } from '@/services/hooks';
 
 type TBurgerConstructorProps = {
-  ingredients: TIngredient[];
-  onRemoveIngredient: (ingredient: TIngredient) => void;
   onOrderClick: () => void;
 };
 
 export const BurgerConstructor = ({
-  ingredients,
-  onRemoveIngredient,
   onOrderClick,
 }: TBurgerConstructorProps): React.JSX.Element => {
-  const bun = useMemo(() => {
-    const buns = ingredients.filter((ingredient) => ingredient.type === 'bun');
-    return buns.at(-1) ?? null;
-  }, [ingredients]);
-
-  const fillingIngredients = useMemo(
-    () => ingredients.filter((ingredient) => ingredient.type !== 'bun'),
-    [ingredients]
-  );
-
-  const totalPrice = useMemo(() => {
-    const fillingPrice = fillingIngredients.reduce(
-      (sum, ingredient) => sum + ingredient.price,
-      0
-    );
-    const bunPrice = bun ? bun.price * 2 : 0;
-    return fillingPrice + bunPrice;
-  }, [fillingIngredients, bun]);
-
-  const canOrder = Boolean(bun) && fillingIngredients.length > 0;
+  const bun = useAppSelector(selectConstructorBun);
+  const fillingIngredients = useAppSelector(selectConstructorIngredients);
 
   return (
     <section className={styles.burger_constructor}>
@@ -62,7 +43,6 @@ export const BurgerConstructor = ({
             <BurgerIngredient
               key={`${ingredient._id}-${index}`}
               ingredient={ingredient}
-              onRemoveIngredient={onRemoveIngredient}
             />
           ))}
         </ul>
@@ -83,11 +63,7 @@ export const BurgerConstructor = ({
         </p>
       )}
 
-      <BurgerFooter
-        onOrderClick={onOrderClick}
-        totalPrice={totalPrice}
-        canOrder={canOrder}
-      />
+      <BurgerFooter onOrderClick={onOrderClick} />
     </section>
   );
 };

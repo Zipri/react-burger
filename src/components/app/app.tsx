@@ -11,27 +11,18 @@ import styles from './app.module.css';
 
 import type { TID } from '@/api/base/types';
 import type { TIngredient } from '@/api/ingredients/types';
-import { selectSelectedIngredients } from '@/services/constructor/selectors';
-import {
-  addIngredientToConstructor,
-  removeIngredientFromConstructor,
-} from '@/services/constructor/slice';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { fetchIngredients } from '@/services/ingredients/actions';
 import {
   selectIngredientsError,
-  selectIngredientsItems,
   selectIngredientsLoading,
 } from '@/services/ingredients/selectors';
 
 export const App = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
 
-  const ingredients = useAppSelector(selectIngredientsItems);
   const isLoading = useAppSelector(selectIngredientsLoading);
   const error = useAppSelector(selectIngredientsError);
-
-  const selectedIngredients = useAppSelector(selectSelectedIngredients);
 
   //#region modal Ingredient state
   const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
@@ -57,24 +48,6 @@ export const App = (): React.JSX.Element => {
   const handleCloseOrderModal = useCallback(() => {
     setIsOrderModalOpen(false);
   }, []);
-  //#endregion
-
-  //#region handlers
-  const handleSelectIngredient = useCallback(
-    (ingredient: TIngredient) => {
-      dispatch(addIngredientToConstructor(ingredient));
-      // openIngredientModal(ingredient);
-    },
-    // [dispatch, openIngredientModal]
-    [dispatch]
-  );
-
-  const handleRemoveIngredient = useCallback(
-    (ingredient: TIngredient) => {
-      dispatch(removeIngredientFromConstructor(ingredient));
-    },
-    [dispatch]
-  );
   //#endregion
 
   useEffect(() => {
@@ -104,16 +77,8 @@ export const App = (): React.JSX.Element => {
         )}
         {!isLoading && !error && (
           <main className={`${styles.main} pl-5 pr-5`}>
-            <BurgerIngredients
-              ingredients={ingredients}
-              selectedIngredients={selectedIngredients}
-              onSelectIngredient={handleSelectIngredient}
-            />
-            <BurgerConstructor
-              ingredients={selectedIngredients}
-              onRemoveIngredient={handleRemoveIngredient}
-              onOrderClick={openOrderModal}
-            />
+            <BurgerIngredients />
+            <BurgerConstructor onOrderClick={openOrderModal} />
           </main>
         )}
       </div>

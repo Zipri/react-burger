@@ -2,17 +2,22 @@ import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-component
 
 import styles from './burger-constructor.module.scss';
 
+import {
+  selectConstructorCanOrder,
+  selectConstructorTotalPrice,
+} from '@/services/constructor/selectors';
+import { useAppSelector } from '@/services/hooks';
+
 type TBurgerFooterProps = {
-  totalPrice: number;
-  canOrder: boolean;
   onOrderClick: () => void;
 };
 
 export const BurgerFooter = ({
-  totalPrice,
-  canOrder,
   onOrderClick,
 }: TBurgerFooterProps): React.JSX.Element => {
+  const totalPrice = useAppSelector(selectConstructorTotalPrice);
+  const canOrder = useAppSelector(selectConstructorCanOrder);
+
   return (
     <div className={styles.footer}>
       <div className={styles.price}>

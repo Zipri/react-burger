@@ -1,26 +1,33 @@
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useCallback } from 'react';
 
 import styles from './burger-ingredients.module.scss';
 
 import type { TIngredient } from '@/api/ingredients/types';
+import { addIngredientToConstructor } from '@/services/constructor/slice';
+import { useAppDispatch } from '@/services/hooks';
 
 type TBurgerIngredientProps = {
   ingredient: TIngredient;
   count: number;
-  onSelectIngredient: (ingredient: TIngredient) => void;
 };
 
 export const BurgerIngredient = ({
   ingredient,
   count,
-  onSelectIngredient,
 }: TBurgerIngredientProps): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+
+  const handleSelectIngredient = useCallback(() => {
+    dispatch(addIngredientToConstructor(ingredient));
+  }, [dispatch, ingredient]);
+
   return (
     <li key={ingredient._id} className={styles.ingredient_item}>
       <button
         type="button"
         className={styles.ingredient_button}
-        onClick={() => onSelectIngredient(ingredient)}
+        onClick={handleSelectIngredient}
       >
         {count > 0 && (
           <Counter count={count} size="default" extraClass={styles.counter} />
