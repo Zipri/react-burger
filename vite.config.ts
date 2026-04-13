@@ -35,6 +35,8 @@ export default defineConfig({
       '@modals': '/src/components/modals',
       '@utils': '/src/utils',
       '@styles': '/src/styles',
+      '@services': '/src/services',
+      '@common-services': '/src/services/common',
     },
   },
   css: {
