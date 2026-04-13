@@ -10,16 +10,28 @@ import { v1 } from 'uuid';
 import styles from './app.module.css';
 
 import type { TID } from '@/api/base/types';
-import { ingredientsApi } from '@/api/ingredients';
 import type { TIngredient } from '@/api/ingredients/types';
+import { selectSelectedIngredients } from '@/services/constructor/selectors';
+import {
+  addIngredientToConstructor,
+  removeIngredientFromConstructor,
+} from '@/services/constructor/slice';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import { fetchIngredients } from '@/services/ingredients/actions';
+import {
+  selectIngredientsError,
+  selectIngredientsItems,
+  selectIngredientsLoading,
+} from '@/services/ingredients/selectors';
 
 export const App = (): React.JSX.Element => {
-  //#region local state
-  const [ingredients, setIngredients] = useState<TIngredient[]>([]);
-  const [selectedIngredients, setSelectedIngredients] = useState<TIngredient[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
-  //#endregion
+  const dispatch = useAppDispatch();
+
+  const ingredients = useAppSelector(selectIngredientsItems);
+  const isLoading = useAppSelector(selectIngredientsLoading);
+  const error = useAppSelector(selectIngredientsError);
+
+  const selectedIngredients = useAppSelector(selectSelectedIngredients);
 
   //#region modal Ingredient state
   const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
@@ -50,40 +62,24 @@ export const App = (): React.JSX.Element => {
   //#region handlers
   const handleSelectIngredient = useCallback(
     (ingredient: TIngredient) => {
-      setSelectedIngredients((prev) => {
-        if (ingredient.type === 'bun') {
-          const withoutBuns = prev.filter((item) => item.type !== 'bun');
-          return [ingredient, ...withoutBuns];
-        }
-
-        return [...prev, ingredient];
-      });
-
-      openIngredientModal(ingredient);
+      dispatch(addIngredientToConstructor(ingredient));
+      // openIngredientModal(ingredient);
     },
-    [openIngredientModal]
+    // [dispatch, openIngredientModal]
+    [dispatch]
   );
 
-  const handleRemoveIngredient = useCallback((ingredient: TIngredient) => {
-    setSelectedIngredients((prev) => prev.filter((item) => item._id !== ingredient._id));
-  }, []);
+  const handleRemoveIngredient = useCallback(
+    (ingredient: TIngredient) => {
+      dispatch(removeIngredientFromConstructor(ingredient));
+    },
+    [dispatch]
+  );
   //#endregion
 
   useEffect(() => {
-    ingredientsApi
-      .getIngredients()
-      .then((data) => {
-        setIngredients(data);
-      })
-      .catch((err: unknown) => {
-        const message =
-          err instanceof Error ? err.message : 'Ошибка загрузки ингредиентов';
-        setError(message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   return (
     <>
