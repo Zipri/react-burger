@@ -1,17 +1,18 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { TIngredient } from '@/api/ingredients/types';
 import type { TConstructorState } from '@/services/constructor/slice';
+import type { TConstructorIngredient } from '@/services/constructor/types';
 import type { RootState } from '@/services/store';
 
 export const selectConstructor = (state: RootState): TConstructorState =>
   state.burgerConstructor;
 
-export const selectConstructorBun = (state: RootState): TIngredient | null =>
+export const selectConstructorBun = (state: RootState): TConstructorIngredient | null =>
   state.burgerConstructor.bun;
 
-export const selectConstructorIngredients = (state: RootState): TIngredient[] =>
-  state.burgerConstructor.ingredients;
+export const selectConstructorIngredients = (
+  state: RootState
+): TConstructorIngredient[] => state.burgerConstructor.ingredients;
 
 export const selectConstructorTotalPrice = (state: RootState): number =>
   state.burgerConstructor.bun
@@ -25,7 +26,7 @@ export const selectConstructorTotalPrice = (state: RootState): number =>
 export const selectConstructorCanOrder = (state: RootState): boolean =>
   Boolean(state.burgerConstructor.bun) && state.burgerConstructor.ingredients.length > 0;
 
-export const selectSelectedIngredients = (state: RootState): TIngredient[] =>
+export const selectSelectedIngredients = (state: RootState): TConstructorIngredient[] =>
   state.burgerConstructor.bun
     ? [state.burgerConstructor.bun, ...state.burgerConstructor.ingredients]
     : state.burgerConstructor.ingredients;

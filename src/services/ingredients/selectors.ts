@@ -13,10 +13,14 @@ export const selectIngredientsGroupedByType = (
 ): Record<TIngredientType, TIngredient[]> =>
   state.ingredients.items.reduce(
     (acc, ingredient) => {
-      acc[ingredient.type] = [...(acc[ingredient.type] || []), ingredient];
+      acc[ingredient.type].push(ingredient);
       return acc;
     },
-    {} as Record<TIngredientType, TIngredient[]>
+    {
+      bun: [],
+      sauce: [],
+      main: [],
+    } as Record<TIngredientType, TIngredient[]>
   );
 
 export const selectIngredientsLoading = (state: RootState): boolean =>

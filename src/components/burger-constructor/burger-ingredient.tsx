@@ -6,12 +6,12 @@ import { useCallback } from 'react';
 
 import styles from './burger-constructor.module.scss';
 
-import type { TIngredient } from '@/api/ingredients/types';
 import { removeIngredientFromConstructor } from '@/services/constructor/slice';
+import type { TConstructorIngredient } from '@/services/constructor/types';
 import { useAppDispatch } from '@/services/hooks';
 
 type TBurgerIngredientProps = {
-  ingredient: TIngredient;
+  ingredient: TConstructorIngredient;
 };
 
 export const BurgerIngredient = ({
