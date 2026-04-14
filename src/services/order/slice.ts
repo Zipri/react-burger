@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import {
   closeModal,
@@ -6,33 +6,50 @@ import {
   openModal,
   type TModalState,
 } from '@/services/common/modal-state';
-import { resetRequestState } from '@/services/common/request-state';
+import {
+  finishLoading,
+  resetRequestState,
+  setRequestError,
+  startLoading,
+} from '@/services/common/request-state';
+import { createOrder } from '@/services/order/actions';
+import type { TOrder } from '@/services/order/types';
 
 export type TOrderState = TModalState & {
-  orderNumber: string | null;
+  order: TOrder | null;
 };
 
 const initialState: TOrderState = {
   ...initialModalState,
-  orderNumber: null,
+  order: null,
 };
 
 export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    openOrderDetails: (state, action: PayloadAction<string | null | undefined>) => {
-      state.orderNumber = action.payload ?? null;
-      openModal(state);
-    },
     closeOrderDetails: (state) => {
-      state.orderNumber = null;
+      state.order = null;
       resetRequestState(state);
       closeModal(state);
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createOrder.pending, (state) => {
+        startLoading(state);
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        finishLoading(state);
+        state.order = action.payload;
+        openModal(state);
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        setRequestError(state, action.payload ?? action.error.message);
+      });
+  },
 });
 
-export const { openOrderDetails, closeOrderDetails } = orderSlice.actions;
+export const { closeOrderDetails } = orderSlice.actions;
 
 export const orderReducer = orderSlice.reducer;

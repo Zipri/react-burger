@@ -8,16 +8,18 @@ import {
   selectConstructorTotalPrice,
 } from '@/services/constructor/selectors';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
-import { openOrderDetails } from '@/services/order/slice';
+import { createOrder } from '@/services/order/actions';
+import { selectOrderLoading } from '@/services/order/selectors';
 
 export const BurgerFooter = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
 
   const totalPrice = useAppSelector(selectConstructorTotalPrice);
   const canOrder = useAppSelector(selectConstructorCanOrder);
+  const isOrderLoading = useAppSelector(selectOrderLoading);
 
   const handleOrderClick = useCallback(() => {
-    dispatch(openOrderDetails());
+    dispatch(createOrder());
   }, [dispatch]);
 
   return (
@@ -30,7 +32,7 @@ export const BurgerFooter = (): React.JSX.Element => {
         htmlType="button"
         type="primary"
         size="large"
-        disabled={!canOrder}
+        disabled={!canOrder || isOrderLoading}
         onClick={handleOrderClick}
       >
         Оформить заказ

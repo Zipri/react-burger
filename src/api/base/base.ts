@@ -12,7 +12,26 @@ export abstract class BaseApi {
     return `${this.url}${endpoint}`;
   }
 
-  protected async request<TResponse>(
+  protected async get<TResponse>(endpoint = ''): Promise<TResponse> {
+    return await this.request<TResponse>(endpoint, {
+      method: 'GET',
+    });
+  }
+
+  protected async post<TResponse, TBody>(
+    body: TBody,
+    endpoint = ''
+  ): Promise<TResponse> {
+    return await this.request<TResponse>(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+  }
+
+  private async request<TResponse>(
     endpoint?: string,
     init?: RequestInit
   ): Promise<TResponse> {

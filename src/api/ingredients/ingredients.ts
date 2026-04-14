@@ -9,7 +9,7 @@ class IngredientsApi extends BaseApi {
   }
 
   public async getIngredients(): Promise<TIngredient[]> {
-    const response = await this.request<TIngredientsResponse>();
+    const response = await this.get<TIngredientsResponse>();
     return response.data;
   }
 }

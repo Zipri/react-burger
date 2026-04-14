@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import {
   selectIngredientDetailsIsOpen,
   selectIngredientDetailsLoading,
-  selectIngredientDetailsSelectedIngredient,
 } from '@/services/ingredient-details/selectors';
 import { closeIngredientDetails } from '@/services/ingredient-details/slice';
 
@@ -16,7 +15,6 @@ export const IngredientInfoModal = (): React.JSX.Element => {
 
   const isOpen = useAppSelector(selectIngredientDetailsIsOpen);
   const isLoading = useAppSelector(selectIngredientDetailsLoading);
-  const selectedIngredient = useAppSelector(selectIngredientDetailsSelectedIngredient);
 
   const handleCloseIngredientModal = useCallback(() => {
     dispatch(closeIngredientDetails());
@@ -29,7 +27,7 @@ export const IngredientInfoModal = (): React.JSX.Element => {
       isOpen={isOpen}
       isLoading={isLoading}
     >
-      <IngredientInfoContent selectedIngredient={selectedIngredient} />
+      <IngredientInfoContent />
     </Modal>
   );
 };
