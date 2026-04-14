@@ -10,6 +10,7 @@ type TModalProps = {
   onClose: () => void;
   children: React.ReactNode;
   isLoading?: boolean;
+  isOpen?: boolean;
 };
 
 export const Modal = ({
@@ -17,6 +18,7 @@ export const Modal = ({
   onClose,
   children,
   isLoading = false,
+  isOpen = false,
 }: TModalProps): React.JSX.Element | null => {
   const modalRoot = document.getElementById('modals');
 
@@ -36,6 +38,10 @@ export const Modal = ({
 
   if (!modalRoot) {
     return null;
+  }
+
+  if (!isOpen) {
+    return <></>;
   }
 
   return createPortal(

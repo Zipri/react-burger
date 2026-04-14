@@ -4,12 +4,16 @@ import type { TIngredient } from '@/api/ingredients/types';
 import { EllipsisText } from '@/components/common';
 
 type TIngredientInfoContentProps = {
-  selectedIngredient: TIngredient;
+  selectedIngredient: TIngredient | null;
 };
 
 export const IngredientInfoContent = ({
   selectedIngredient,
 }: TIngredientInfoContentProps): React.JSX.Element => {
+  if (!selectedIngredient) {
+    return <> Нет данных </>;
+  }
+
   return (
     <div className={styles.content}>
       <img

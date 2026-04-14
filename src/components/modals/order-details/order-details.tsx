@@ -5,12 +5,16 @@ import styles from './order-details.module.scss';
 import { EllipsisText } from '@/components/common';
 
 type TOrderDetailsContentProps = {
-  orderNumber: string;
+  orderNumber: string | null;
 };
 
 export const OrderDetailsContent = ({
   orderNumber,
 }: TOrderDetailsContentProps): React.JSX.Element => {
+  if (!orderNumber) {
+    return <> Нет данных </>;
+  }
+
   return (
     <div className={styles.content}>
       <EllipsisText

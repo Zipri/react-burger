@@ -1,4 +1,5 @@
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useCallback } from 'react';
 
 import styles from './burger-constructor.module.scss';
 
@@ -6,17 +7,18 @@ import {
   selectConstructorCanOrder,
   selectConstructorTotalPrice,
 } from '@/services/constructor/selectors';
-import { useAppSelector } from '@/services/hooks';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import { openOrderDetails } from '@/services/order/slice';
 
-type TBurgerFooterProps = {
-  onOrderClick: () => void;
-};
+export const BurgerFooter = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
 
-export const BurgerFooter = ({
-  onOrderClick,
-}: TBurgerFooterProps): React.JSX.Element => {
   const totalPrice = useAppSelector(selectConstructorTotalPrice);
   const canOrder = useAppSelector(selectConstructorCanOrder);
+
+  const handleOrderClick = useCallback(() => {
+    dispatch(openOrderDetails());
+  }, [dispatch]);
 
   return (
     <div className={styles.footer}>
@@ -29,7 +31,7 @@ export const BurgerFooter = ({
         type="primary"
         size="large"
         disabled={!canOrder}
-        onClick={onOrderClick}
+        onClick={handleOrderClick}
       >
         Оформить заказ
       </Button>

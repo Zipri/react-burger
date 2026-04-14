@@ -10,13 +10,7 @@ import {
 } from '@/services/constructor/selectors';
 import { useAppSelector } from '@/services/hooks';
 
-type TBurgerConstructorProps = {
-  onOrderClick: () => void;
-};
-
-export const BurgerConstructor = ({
-  onOrderClick,
-}: TBurgerConstructorProps): React.JSX.Element => {
+export const BurgerConstructor = (): React.JSX.Element => {
   const bun = useAppSelector(selectConstructorBun);
   const fillingIngredients = useAppSelector(selectConstructorIngredients);
 
@@ -63,7 +57,7 @@ export const BurgerConstructor = ({
         </p>
       )}
 
-      <BurgerFooter onOrderClick={onOrderClick} />
+      <BurgerFooter />
     </section>
   );
 };

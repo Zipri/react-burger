@@ -22,15 +22,12 @@ export const IngredientInfoModal = (): React.JSX.Element => {
     dispatch(closeIngredientDetails());
   }, [dispatch]);
 
-  if (!selectedIngredient || !isOpen) {
-    return <></>;
-  }
-
   return (
     <Modal
-      isLoading={isLoading}
       title="Детали ингредиента"
       onClose={handleCloseIngredientModal}
+      isOpen={isOpen}
+      isLoading={isLoading}
     >
       <IngredientInfoContent selectedIngredient={selectedIngredient} />
     </Modal>
