@@ -41,19 +41,17 @@ export const Modal = ({
   return createPortal(
     <>
       <ModalOverlay onClose={onClose} />
-      {isLoading && <Preloader />}
-      {!isLoading && (
-        <section className={styles.modal} role="dialog" aria-modal="true">
-          <header className={styles.header}>
-            {title ? <h2 className="text text_type_main-large">{title}</h2> : <span />}
-            <button type="button" className={styles.closeButton} onClick={onClose}>
-              <CloseIcon type="primary" />
-            </button>
-          </header>
+      <section className={styles.modal} role="dialog" aria-modal="true">
+        <header className={styles.header}>
+          {title ? <h2 className="text text_type_main-large">{title}</h2> : <span />}
+          <button type="button" className={styles.closeButton} onClick={onClose}>
+            <CloseIcon type="primary" />
+          </button>
+        </header>
 
-          <div className={styles.content}>{children}</div>
-        </section>
-      )}
+        {isLoading && <Preloader />}
+        {!isLoading && <div className={styles.content}>{children}</div>}
+      </section>
     </>,
     modalRoot
   );

@@ -1,45 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
 
 import { IngredientInfoContent } from './ingredient-info';
 
-import type { TIngredient } from '@/api/ingredients/types';
 import { Modal } from '@/components/modal';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import {
+  selectIngredientDetailsIsOpen,
+  selectIngredientDetailsLoading,
+  selectIngredientDetailsSelectedIngredient,
+} from '@/services/ingredient-details/selectors';
+import { closeIngredientDetails } from '@/services/ingredient-details/slice';
 
-type TIngredientInfoModalProps = {
-  isOpen: boolean;
-  selectedIngredient: TIngredient | null;
-  handleCloseIngredientModal: () => void;
-};
+export const IngredientInfoModal = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
 
-export const IngredientInfoModal = ({
-  isOpen,
-  selectedIngredient,
-  handleCloseIngredientModal,
-}: TIngredientInfoModalProps): React.JSX.Element => {
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const isOpen = useAppSelector(selectIngredientDetailsIsOpen);
+  const isLoading = useAppSelector(selectIngredientDetailsLoading);
+  const selectedIngredient = useAppSelector(selectIngredientDetailsSelectedIngredient);
 
-  useEffect(() => {
-    if (!isOpen || !selectedIngredient) {
-      setIsImageLoaded(false);
-      return;
-    }
-    let isActive = true;
-    const image = new Image();
-    image.src = selectedIngredient.image_large;
-    image.onload = () => {
-      if (isActive) {
-        setIsImageLoaded(true);
-      }
-    };
-    image.onerror = () => {
-      if (isActive) {
-        setIsImageLoaded(true);
-      }
-    };
-    return () => {
-      isActive = false;
-    };
-  }, [isOpen, selectedIngredient]);
+  const handleCloseIngredientModal = useCallback(() => {
+    dispatch(closeIngredientDetails());
+  }, [dispatch]);
 
   if (!selectedIngredient || !isOpen) {
     return <></>;
@@ -47,7 +28,7 @@ export const IngredientInfoModal = ({
 
   return (
     <Modal
-      isLoading={!isImageLoaded}
+      isLoading={isLoading}
       title="Детали ингредиента"
       onClose={handleCloseIngredientModal}
     >

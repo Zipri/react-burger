@@ -10,7 +10,6 @@ import { v1 } from 'uuid';
 import styles from './app.module.css';
 
 import type { TID } from '@/api/base/types';
-import type { TIngredient } from '@/api/ingredients/types';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { fetchIngredients } from '@/services/ingredients/actions';
 import {
@@ -23,21 +22,6 @@ export const App = (): React.JSX.Element => {
 
   const isLoading = useAppSelector(selectIngredientsLoading);
   const error = useAppSelector(selectIngredientsError);
-
-  //#region modal Ingredient state
-  const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
-  const [isIngredientModalOpen, setIsIngredientModalOpen] = useState<boolean>(false);
-
-  const openIngredientModal = useCallback((ingredient: TIngredient) => {
-    setSelectedIngredient(ingredient);
-    setIsIngredientModalOpen(true);
-  }, []);
-
-  const handleCloseIngredientModal = useCallback(() => {
-    setIsIngredientModalOpen(false);
-    setSelectedIngredient(null);
-  }, []);
-  //#endregion
 
   //#region modal Order state
   const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
@@ -56,11 +40,7 @@ export const App = (): React.JSX.Element => {
 
   return (
     <>
-      <IngredientInfoModal
-        isOpen={isIngredientModalOpen}
-        selectedIngredient={selectedIngredient}
-        handleCloseIngredientModal={handleCloseIngredientModal}
-      />
+      <IngredientInfoModal />
       <OrderDetailsModal
         isOpen={isOrderModalOpen}
         orderNumber={orderNumber}

@@ -1,4 +1,8 @@
-import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import {
+  Counter,
+  CurrencyIcon,
+  InfoIcon,
+} from '@krgaa/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 
 import styles from './burger-ingredients.module.scss';
@@ -6,6 +10,7 @@ import styles from './burger-ingredients.module.scss';
 import type { TIngredient } from '@/api/ingredients/types';
 import { addIngredientToConstructor } from '@/services/constructor/slice';
 import { useAppDispatch } from '@/services/hooks';
+import { openIngredientDetailsWithPreload } from '@/services/ingredient-details/actions';
 
 type TBurgerIngredientProps = {
   ingredient: TIngredient;
@@ -22,8 +27,24 @@ export const BurgerIngredient = ({
     dispatch(addIngredientToConstructor(ingredient));
   }, [dispatch, ingredient]);
 
+  const handleOpenIngredientDetails = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dispatch(openIngredientDetailsWithPreload(ingredient));
+    },
+    [dispatch, ingredient]
+  );
+
   return (
     <li key={ingredient._id} className={styles.ingredient_item}>
+      <button
+        type="button"
+        className={styles.detail_button}
+        onClick={handleOpenIngredientDetails}
+      >
+        <InfoIcon type="secondary" />
+      </button>
       <button
         type="button"
         className={styles.ingredient_button}

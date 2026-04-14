@@ -24,3 +24,8 @@ export const setRequestError = (
 export const finishLoading = (state: TRequestState): void => {
   state.isLoading = false;
 };
+
+export const resetRequestState = (state: TRequestState): void => {
+  state.isLoading = false;
+  state.error = null;
+};
