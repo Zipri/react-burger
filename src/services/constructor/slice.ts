@@ -3,6 +3,11 @@ import { createSlice, nanoid, type PayloadAction } from '@reduxjs/toolkit';
 import type { TIngredient } from '@/api/ingredients/types';
 import type { TConstructorIngredient } from '@/services/constructor/types';
 
+export type TMoveIngredientPayload = {
+  fromIndex: number;
+  toIndex: number;
+};
+
 export type TConstructorState = {
   bun: TConstructorIngredient | null;
   ingredients: TConstructorIngredient[];
@@ -35,10 +40,32 @@ export const constructorSlice = createSlice({
       const ingredient = action.payload;
       state.ingredients = state.ingredients.filter((item) => item.id !== ingredient.id);
     },
+    moveIngredientInConstructor: (
+      state,
+      action: PayloadAction<TMoveIngredientPayload>
+    ) => {
+      const { fromIndex, toIndex } = action.payload;
+
+      if (
+        fromIndex === toIndex ||
+        fromIndex < 0 ||
+        toIndex < 0 ||
+        fromIndex >= state.ingredients.length ||
+        toIndex >= state.ingredients.length
+      ) {
+        return;
+      }
+
+      const [moved] = state.ingredients.splice(fromIndex, 1);
+      state.ingredients.splice(toIndex, 0, moved);
+    },
   },
 });
 
-export const { addIngredientToConstructor, removeIngredientFromConstructor } =
-  constructorSlice.actions;
+export const {
+  addIngredientToConstructor,
+  removeIngredientFromConstructor,
+  moveIngredientInConstructor,
+} = constructorSlice.actions;
 
 export const constructorReducer = constructorSlice.reducer;

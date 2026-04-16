@@ -9,7 +9,7 @@
 }
 
 .ingredients_scroll {
-  height: 100%;
+  min-height: 0;
   overflow-y: auto;
 }
 
@@ -39,3 +39,50 @@
   align-items: center;
 }
 
+.drop_active {
+  outline: 1px dashed #4c4cff;
+  border-radius: 16px;
+  background: rgb(76 76 255 / 8%);
+}
+
+.drop_area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.ingredients_empty {
+  margin: 0;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  width: calc(100% - 28px); // аналог отступа ml-7
+  background: var(--background-element);
+}
+
+.placeholder_top {
+  border-radius: 88px 88px 40px 40px;
+}
+
+.placeholder_middle {
+  border-radius: 40px;
+  margin-left: 26px;
+}
+
+.placeholder_bottom {
+  border-radius: 40px 40px 88px 88px;
+}
+
+.placeholder p {
+  margin: 0;
+}

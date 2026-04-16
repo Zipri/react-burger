@@ -8,6 +8,7 @@ import { useCallback } from 'react';
 import styles from './burger-ingredients.module.scss';
 
 import type { TIngredient } from '@/api/ingredients/types';
+import { useConstructorIngredientDrag } from '@/components/burger-ingredients/hooks/use-constructor-ingredient-drag';
 import { addIngredientToConstructor } from '@/services/constructor/slice';
 import { useAppDispatch } from '@/services/hooks';
 import { openIngredientDetailsWithPreload } from '@/services/ingredient-details/actions';
@@ -36,8 +37,15 @@ export const BurgerIngredient = ({
     [dispatch, ingredient]
   );
 
+  const { isDragging, setNodeRef } = useConstructorIngredientDrag(ingredient);
+
   return (
-    <li key={ingredient._id} className={styles.ingredient_item}>
+    <li
+      ref={setNodeRef}
+      key={ingredient._id}
+      className={styles.ingredient_item}
+      style={{ opacity: isDragging ? 0.5 : 1 }}
+    >
       <button
         type="button"
         className={styles.detail_button}
