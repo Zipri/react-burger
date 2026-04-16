@@ -14,14 +14,17 @@ export const selectConstructorIngredients = (
   state: RootState
 ): TConstructorIngredient[] => state.burgerConstructor.ingredients;
 
-export const selectConstructorTotalPrice = (state: RootState): number =>
-  state.burgerConstructor.bun
-    ? state.burgerConstructor.bun.price * 2 +
-      state.burgerConstructor.ingredients.reduce(
-        (sum, ingredient) => sum + ingredient.price,
-        0
-      )
-    : 0;
+export const selectConstructorTotalPrice = createSelector(
+  [selectConstructorBun, selectConstructorIngredients],
+  (bun, ingredients): number => {
+    const fillingsPrice = ingredients.reduce(
+      (sum, ingredient) => sum + ingredient.price,
+      0
+    );
+    const bunPrice = bun ? bun.price * 2 : 0;
+    return fillingsPrice + bunPrice;
+  }
+);
 
 export const selectConstructorCanOrder = (state: RootState): boolean =>
   Boolean(state.burgerConstructor.bun) && state.burgerConstructor.ingredients.length > 0;
