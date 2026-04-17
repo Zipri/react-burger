@@ -10,6 +10,7 @@ type TModalProps = {
   onClose: () => void;
   children: React.ReactNode;
   isLoading?: boolean;
+  isOpen?: boolean;
 };
 
 export const Modal = ({
@@ -17,6 +18,7 @@ export const Modal = ({
   onClose,
   children,
   isLoading = false,
+  isOpen = false,
 }: TModalProps): React.JSX.Element | null => {
   const modalRoot = document.getElementById('modals');
 
@@ -38,22 +40,24 @@ export const Modal = ({
     return null;
   }
 
+  if (!isOpen) {
+    return <></>;
+  }
+
   return createPortal(
     <>
       <ModalOverlay onClose={onClose} />
-      {isLoading && <Preloader />}
-      {!isLoading && (
-        <section className={styles.modal} role="dialog" aria-modal="true">
-          <header className={styles.header}>
-            {title ? <h2 className="text text_type_main-large">{title}</h2> : <span />}
-            <button type="button" className={styles.closeButton} onClick={onClose}>
-              <CloseIcon type="primary" />
-            </button>
-          </header>
+      <section className={styles.modal} role="dialog" aria-modal="true">
+        <header className={styles.header}>
+          {title ? <h2 className="text text_type_main-large">{title}</h2> : <span />}
+          <button type="button" className={styles.closeButton} onClick={onClose}>
+            <CloseIcon type="primary" />
+          </button>
+        </header>
 
-          <div className={styles.content}>{children}</div>
-        </section>
-      )}
+        {isLoading && <Preloader />}
+        {!isLoading && <div className={styles.content}>{children}</div>}
+      </section>
     </>,
     modalRoot
   );

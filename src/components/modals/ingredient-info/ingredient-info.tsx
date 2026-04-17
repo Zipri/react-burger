@@ -1,15 +1,16 @@
 import styles from './ingredient-info.module.scss';
 
-import type { TIngredient } from '@/api/ingredients/types';
 import { EllipsisText } from '@/components/common';
+import { useAppSelector } from '@/services/hooks';
+import { selectIngredientDetailsSelectedIngredient } from '@/services/ingredient-details/selectors';
 
-type TIngredientInfoContentProps = {
-  selectedIngredient: TIngredient;
-};
+export const IngredientInfoContent = (): React.JSX.Element => {
+  const selectedIngredient = useAppSelector(selectIngredientDetailsSelectedIngredient);
 
-export const IngredientInfoContent = ({
-  selectedIngredient,
-}: TIngredientInfoContentProps): React.JSX.Element => {
+  if (!selectedIngredient) {
+    return <> Нет данных </>;
+  }
+
   return (
     <div className={styles.content}>
       <img

@@ -11,6 +11,13 @@
     text-shadow: 0 0 46px rgb(51 51 255 / 25%), 0 0 8px rgb(51 51 255 / 25%);
 }
 
+.orderName {
+    max-width: 520px;
+    text-align: center;
+    // фиолетовый текст
+    color: #987cde; 
+}
+
 .iconWrapper {
     display: flex;
     justify-content: center;

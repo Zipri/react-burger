@@ -1,18 +1,27 @@
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useCallback } from 'react';
 
 import styles from './burger-constructor.module.scss';
 
-type TBurgerFooterProps = {
-  totalPrice: number;
-  canOrder: boolean;
-  onOrderClick: () => void;
-};
+import {
+  selectConstructorCanOrder,
+  selectConstructorTotalPrice,
+} from '@/services/constructor/selectors';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import { createOrder } from '@/services/order/actions';
+import { selectOrderLoading } from '@/services/order/selectors';
 
-export const BurgerFooter = ({
-  totalPrice,
-  canOrder,
-  onOrderClick,
-}: TBurgerFooterProps): React.JSX.Element => {
+export const BurgerFooter = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+
+  const totalPrice = useAppSelector(selectConstructorTotalPrice);
+  const canOrder = useAppSelector(selectConstructorCanOrder);
+  const isOrderLoading = useAppSelector(selectOrderLoading);
+
+  const handleOrderClick = useCallback(() => {
+    dispatch(createOrder());
+  }, [dispatch]);
+
   return (
     <div className={styles.footer}>
       <div className={styles.price}>
@@ -23,8 +32,8 @@ export const BurgerFooter = ({
         htmlType="button"
         type="primary"
         size="large"
-        disabled={!canOrder}
-        onClick={onOrderClick}
+        disabled={!canOrder || isOrderLoading}
+        onClick={handleOrderClick}
       >
         Оформить заказ
       </Button>

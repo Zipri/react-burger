@@ -1,54 +1,22 @@
-import { useMemo } from 'react';
-
 import { BurgerIngredient } from './burger-ingredient';
 import { BurgerIngredientsNav } from './burger-ingredients-nav';
 import styles from './burger-ingredients.module.scss';
 
-import type { TIngredient, TIngredientType } from '@/api/ingredients/types';
+import type { TIngredientType } from '@/api/ingredients/types';
+import { selectIngredientsCountMap } from '@/services/constructor/selectors';
+import { useAppSelector } from '@/services/hooks';
+import { selectIngredientsGroupedByType } from '@/services/ingredients/selectors';
 import { useTab } from '@/utils/hooks';
 
-type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
-  selectedIngredients: TIngredient[];
-  onSelectIngredient: (ingredient: TIngredient) => void;
-};
+export const BurgerIngredients = (): React.JSX.Element => {
+  const groupedIngredients = useAppSelector(selectIngredientsGroupedByType);
+  const ingredientsCountMap = useAppSelector(selectIngredientsCountMap);
 
-export const BurgerIngredients = ({
-  ingredients,
-  selectedIngredients,
-  onSelectIngredient,
-}: TBurgerIngredientsProps): React.JSX.Element => {
   const { currentTab, sectionRefs, contentRef, scrollToSection, handleScroll } =
     useTab<TIngredientType>({
       tabs: ['bun', 'sauce', 'main'],
       initialTab: 'bun',
     });
-
-  const groupedIngredients = useMemo(
-    () => ({
-      bun: ingredients.filter((ingredient) => ingredient.type === 'bun'),
-      sauce: ingredients.filter((ingredient) => ingredient.type === 'sauce'),
-      main: ingredients.filter((ingredient) => ingredient.type === 'main'),
-    }),
-    [ingredients]
-  );
-
-  const ingredientsCountMap = useMemo(() => {
-    const map: Record<string, number> = {};
-
-    selectedIngredients.forEach((ingredient) => {
-      if (ingredient.type !== 'bun') {
-        map[ingredient._id] = (map[ingredient._id] ?? 0) + 1;
-      }
-    });
-
-    const bun = selectedIngredients.find((ingredient) => ingredient.type === 'bun');
-    if (bun) {
-      map[bun._id] = 2;
-    }
-
-    return map;
-  }, [selectedIngredients]);
 
   return (
     <section className={styles.burger_ingredients}>
@@ -67,7 +35,6 @@ export const BurgerIngredients = ({
                 key={ingredient._id}
                 ingredient={ingredient}
                 count={ingredientsCountMap[ingredient._id] ?? 0}
-                onSelectIngredient={onSelectIngredient}
               />
             ))}
           </ul>
@@ -80,7 +47,6 @@ export const BurgerIngredients = ({
                 key={ingredient._id}
                 ingredient={ingredient}
                 count={ingredientsCountMap[ingredient._id] ?? 0}
-                onSelectIngredient={onSelectIngredient}
               />
             ))}
           </ul>
@@ -93,7 +59,6 @@ export const BurgerIngredients = ({
                 key={ingredient._id}
                 ingredient={ingredient}
                 count={ingredientsCountMap[ingredient._id] ?? 0}
-                onSelectIngredient={onSelectIngredient}
               />
             ))}
           </ul>

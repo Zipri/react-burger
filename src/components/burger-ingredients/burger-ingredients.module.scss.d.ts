@@ -7,6 +7,7 @@ declare const classNames: {
   readonly ingredient_item: 'ingredient_item';
   readonly ingredient_button: 'ingredient_button';
   readonly counter: 'counter';
+  readonly detail_button: 'detail_button';
   readonly ingredient_image: 'ingredient_image';
   readonly price: 'price';
   readonly name: 'name';

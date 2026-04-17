@@ -1,7 +1,9 @@
+import type { TID } from '@/api/base/types';
+
 export type TIngredientType = 'bun' | 'main' | 'sauce';
 
 export type TIngredient = {
-  _id: string;
+  _id: TID;
   name: string;
   type: TIngredientType;
   proteins: number;

@@ -30,6 +30,8 @@
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
       "@services/*": ["src/services/*"],
+      "@common-services": ["src/services/common"],
+      "@common-services/*": ["src/services/common/*"],
       "@utils/*": ["src/utils/*"],
       "@styles/*": ["src/styles/*"]
     },
