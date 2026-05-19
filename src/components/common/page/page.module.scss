@@ -1,7 +1,14 @@
-  $app-header-height: 88px;
+$app-header-height: 88px;
 
 .page {
   display: flex;
   flex-direction: column;
   height: calc(100vh - $app-header-height);
+
+  .title {
+    width: 100%;
+    max-width: 1260px;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
