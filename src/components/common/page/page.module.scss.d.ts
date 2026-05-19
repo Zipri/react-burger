@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly overlay: "overlay";
+  readonly page: "page";
 };
 export default classNames;
