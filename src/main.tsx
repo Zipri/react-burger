@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 
 import './index.scss';
 import { store } from '@/services/store';
-import { router } from './services/router';
 import { RouterProvider } from 'react-router-dom';
+import { router } from '@services/router';
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>

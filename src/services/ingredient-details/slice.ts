@@ -34,6 +34,10 @@ export const ingredientDetailsSlice = createSlice({
     startIngredientImageLoading: (state) => {
       startLoading(state);
     },
+    setIngredientDetails: (state, action: PayloadAction<TIngredient>) => {
+      state.ingredient = action.payload;
+      resetRequestState(state);
+    },
     finishIngredientImageLoading: (state) => {
       finishLoading(state);
     },
@@ -54,6 +58,7 @@ export const {
   finishIngredientImageLoading,
   failIngredientImageLoading,
   closeIngredientDetails,
+  setIngredientDetails,
 } = ingredientDetailsSlice.actions;
 
 export const ingredientDetailsReducer = ingredientDetailsSlice.reducer;
