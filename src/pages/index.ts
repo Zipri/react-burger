@@ -9,3 +9,4 @@ export { ProfilePage } from './profile';
 export { ProfileOrdersPage } from './profile-orders';
 export { FeedPage } from './feed';
 export { NotFoundPage } from './not-found';
+export { ProfileMainPage } from './profile-main';

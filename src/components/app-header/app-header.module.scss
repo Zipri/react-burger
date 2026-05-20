@@ -12,22 +12,27 @@
   margin: 0 auto;
 }
 
-.menu_part_left {
+.menuPartLeft {
   display: flex;
   flex-basis: 35%;
 }
 
+.leftGap {
+  margin-left: 40px;
+}
+
 .link {
   display: flex;
+  align-items: center;
   color: var(--text-inactive-color);
   text-decoration: none;
 }
 
-.link_active {
+.linkActive {
   color: var(--text-primary-color);
 }
 
-.link_position_last {
+.linkPositionLast {
   display: flex;
   flex-basis: 35%;
   justify-content: flex-end;

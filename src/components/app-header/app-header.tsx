@@ -4,31 +4,69 @@ import {
   Logo,
   ProfileIcon,
 } from '@krgaa/react-developer-burger-ui-components';
+import { NavLink } from 'react-router-dom';
 
 import styles from './app-header.module.scss';
+
+type TNavIconComponent = React.ComponentType<{
+  type: 'primary' | 'secondary';
+}>;
+
+type THeaderNavLinkProps = {
+  to: string;
+  label: string;
+  Icon: TNavIconComponent;
+  end?: boolean;
+  extraClassName?: string;
+};
+
+const HeaderNavLink = ({
+  to,
+  label,
+  Icon,
+  end = false,
+  extraClassName = '',
+}: THeaderNavLinkProps): React.JSX.Element => (
+  <NavLink
+    to={to}
+    end={end}
+    className={({ isActive }) =>
+      `${styles.link} ${extraClassName} ${isActive ? styles.linkActive : ''}`.trim()
+    }
+  >
+    {({ isActive }) => (
+      <>
+        <Icon type={isActive ? 'primary' : 'secondary'} />
+        <p className="text text_type_main-default ml-2">{label}</p>
+      </>
+    )}
+  </NavLink>
+);
 
 export const AppHeader = (): React.JSX.Element => {
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
-        <div className={styles.menu_part_left}>
-          {/* Тут должны быть ссылки, а не например кнопки или абзацы */}
-          <a href="/" className={`${styles.link} ${styles.link_active}`}>
-            <BurgerIcon type="primary" />
-            <p className="text text_type_main-default ml-2">Конструктор</p>
-          </a>
-          <a href="/feed" className={`${styles.link} ml-10`}>
-            <ListIcon type="secondary" />
-            <p className="text text_type_main-default ml-2">Лента заказов</p>
-          </a>
+        <div className={styles.menuPartLeft}>
+          <HeaderNavLink to="/" end label="Конструктор" Icon={BurgerIcon} />
+          <HeaderNavLink
+            to="/feed"
+            label="Лента заказов"
+            Icon={ListIcon}
+            extraClassName={styles.leftGap}
+          />
         </div>
+
         <div className={styles.logo}>
           <Logo />
         </div>
-        <a href="/profile" className={`${styles.link} ${styles.link_position_last}`}>
-          <ProfileIcon type="secondary" />
-          <p className="text text_type_main-default ml-2">Личный кабинет</p>
-        </a>
+
+        <HeaderNavLink
+          to="/profile"
+          label="Личный кабинет"
+          Icon={ProfileIcon}
+          extraClassName={styles.linkPositionLast}
+        />
       </nav>
     </header>
   );

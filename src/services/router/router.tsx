@@ -9,6 +9,7 @@ import {
   IngredientDetailsPage,
   LoginPage,
   NotFoundPage,
+  ProfileMainPage,
   ProfileOrdersPage,
   ProfilePage,
   RegisterPage,
@@ -49,8 +50,14 @@ export const router = createBrowserRouter([
       { path: 'register', element: <RegisterPage /> },
       { path: 'forgot-password', element: <ForgotPasswordPage /> },
       { path: 'reset-password', element: <ResetPasswordPage /> },
-      { path: 'profile', element: <ProfilePage /> },
-      { path: 'profile/orders', element: <ProfileOrdersPage /> },
+      {
+        path: 'profile',
+        element: <ProfilePage />,
+        children: [
+          { index: true, element: <ProfileMainPage /> },
+          { path: 'orders', element: <ProfileOrdersPage /> },
+        ],
+      },
       {
         id: 'ingredient-details',
         path: 'ingredients/:id',
