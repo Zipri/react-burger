@@ -12,41 +12,66 @@ export abstract class BaseApi {
     return `${this.url}${endpoint}`;
   }
 
-  protected async get<TResponse>(endpoint = ''): Promise<TResponse> {
+  protected async get<TResponse>(
+    endpoint = '',
+    init: RequestInit = {}
+  ): Promise<TResponse> {
     return await this.request<TResponse>(endpoint, {
+      ...init,
       method: 'GET',
     });
   }
 
   protected async post<TResponse, TBody>(
     body: TBody,
-    endpoint = ''
+    endpoint = '',
+    init: RequestInit = {}
   ): Promise<TResponse> {
+    const headers = new Headers(init.headers);
+    headers.set('Content-Type', 'application/json');
     return await this.request<TResponse>(endpoint, {
+      ...init,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
+      body: JSON.stringify(body),
+    });
+  }
+
+  protected async patch<TResponse, TBody>(
+    body: TBody,
+    endpoint = '',
+    init: RequestInit = {}
+  ): Promise<TResponse> {
+    const headers = new Headers(init.headers);
+    headers.set('Content-Type', 'application/json');
+    return await this.request<TResponse>(endpoint, {
+      ...init,
+      method: 'PATCH',
+      headers,
       body: JSON.stringify(body),
     });
   }
 
   private async request<TResponse>(
-    endpoint?: string,
-    init?: RequestInit
+    endpoint = '',
+    init: RequestInit = {}
   ): Promise<TResponse> {
     const endpointUrl = endpoint ? this.buildUrl(endpoint) : this.url;
-    const response = await fetch(endpointUrl, init);
-    const payload = (await response.json()) as TResponse & TApiErrorResponse;
+    try {
+      const response = await fetch(endpointUrl, init);
+      const payload = (await response.json()) as TResponse & TApiErrorResponse;
 
-    if (!response.ok) {
-      throw new Error(payload.message || `HTTP error: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(payload.message || `HTTP error: ${response.status}`);
+      }
+
+      if (!payload.success) {
+        throw new Error(payload.message || 'API returned unsuccessful response');
+      }
+
+      return payload;
+    } catch (error) {
+      throw new Error(error instanceof Error ? error.message : 'Network request failed');
     }
-
-    if (!payload.success) {
-      throw new Error(payload.message || 'API returned unsuccessful response');
-    }
-
-    return payload;
   }
 }
