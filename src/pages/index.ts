@@ -1,3 +1,11 @@
 export { HomePage } from './home';
 export { ErrorPage } from './error';
 export { IngredientDetailsPage } from './ingredient-details';
+export { LoginPage } from './login';
+export { RegisterPage } from './register';
+export { ForgotPasswordPage } from './forgot-password';
+export { ResetPasswordPage } from './reset-password';
+export { ProfilePage } from './profile';
+export { ProfileOrdersPage } from './profile-orders';
+export { FeedPage } from './feed';
+export { NotFoundPage } from './not-found';

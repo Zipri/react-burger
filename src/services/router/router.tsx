@@ -1,11 +1,21 @@
 import { createBrowserRouter, type LoaderFunctionArgs } from 'react-router-dom';
 
 import { App } from '@components/app/app';
-import { ErrorPage, HomePage, IngredientDetailsPage } from '@/pages';
+import {
+  ErrorPage,
+  FeedPage,
+  ForgotPasswordPage,
+  HomePage,
+  IngredientDetailsPage,
+  LoginPage,
+  NotFoundPage,
+  ProfileOrdersPage,
+  ProfilePage,
+  RegisterPage,
+  ResetPasswordPage,
+} from '@/pages';
 import { store } from '../store';
 import { fetchIngredientById, fetchIngredients } from '../ingredients/actions';
-import type { TIngredient } from '@/api/ingredients/types';
-import { selectIngredientsItems } from '../ingredients/selectors';
 import { setIngredientDetails } from '../ingredient-details/slice';
 
 //#region Loaders
@@ -33,16 +43,21 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     loader: rootLoader,
     children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
+      { index: true, element: <HomePage /> },
+      { path: 'feed', element: <FeedPage /> },
+      { path: 'login', element: <LoginPage /> },
+      { path: 'register', element: <RegisterPage /> },
+      { path: 'forgot-password', element: <ForgotPasswordPage /> },
+      { path: 'reset-password', element: <ResetPasswordPage /> },
+      { path: 'profile', element: <ProfilePage /> },
+      { path: 'profile/orders', element: <ProfileOrdersPage /> },
       {
         id: 'ingredient-details',
         path: 'ingredients/:id',
         loader: ingredientDetailsLoader,
         element: <IngredientDetailsPage />,
       },
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
 ]);
