@@ -1,6 +1,6 @@
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import { Page } from '@/components/common';
 import { resetPassword } from '@/services/auth/actions';
@@ -27,11 +27,9 @@ export const ResetPasswordPage = (): React.JSX.Element => {
     token: '',
   });
 
-  useEffect(() => {
-    if (!authStorage.canResetPassword()) {
-      navigate('/forgot-password', { replace: true });
-    }
-  }, [navigate]);
+  if (!authStorage.canResetPassword()) {
+    return <Navigate to="/forgot-password" replace />;
+  }
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {

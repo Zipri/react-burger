@@ -92,10 +92,19 @@ export abstract class BaseApi {
     const headers = new Headers(init.headers);
 
     if (withAuth) {
-      const accessToken = getAccessToken();
-      if (accessToken) {
-        headers.set('authorization', accessToken);
+      let accessToken = getAccessToken();
+
+      if (!accessToken) {
+        await this.refreshTokens();
+        accessToken = getAccessToken();
       }
+
+      if (!accessToken) {
+        clearTokens();
+        throw new Error('Unauthorized');
+      }
+
+      headers.set('authorization', accessToken);
     }
 
     const response = await fetch(endpointUrl, {
@@ -128,6 +137,7 @@ export abstract class BaseApi {
     const refreshToken = getRefreshToken();
 
     if (!refreshToken) {
+      clearTokens();
       throw new Error('Refresh token is missing');
     }
 
@@ -166,5 +176,5 @@ export abstract class BaseApi {
     );
   };
 
-  //#endregion
+  //#endregion refresh
 }
