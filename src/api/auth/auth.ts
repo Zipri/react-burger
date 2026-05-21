@@ -1,5 +1,4 @@
 import { BaseApi } from '@/api/base';
-
 import type {
   TForgotPasswordRequest,
   TForgotPasswordResponse,
@@ -24,45 +23,47 @@ class AuthApi extends BaseApi {
   }
 
   public async register(data: TRegisterRequest): Promise<TRegisterResponse> {
-    return await this.post<TRegisterResponse, TRegisterRequest>(data, '/auth/register');
+    return await this.post<TRegisterResponse, TRegisterRequest>(
+      data,
+      '/auth/register',
+      {},
+      { auth: false }
+    );
   }
 
   public async login(data: TLoginRequest): Promise<TLoginResponse> {
-    return await this.post<TLoginResponse, TLoginRequest>(data, '/auth/login');
+    return await this.post<TLoginResponse, TLoginRequest>(
+      data,
+      '/auth/login',
+      {},
+      { auth: false }
+    );
   }
 
   public async refreshToken(data: TRefreshTokenRequest): Promise<TRefreshTokenResponse> {
     return await this.post<TRefreshTokenResponse, TRefreshTokenRequest>(
       data,
-      '/auth/token'
+      '/auth/token',
+      {},
+      { auth: false }
     );
   }
 
   public async logout(data: TLogoutRequest): Promise<TLogoutResponse> {
-    return await this.post<TLogoutResponse, TLogoutRequest>(data, '/auth/logout');
-  }
-
-  public async getUser(accessToken: string): Promise<TGetUserResponse> {
-    return await this.get<TGetUserResponse>('/auth/user', {
-      headers: {
-        authorization: accessToken,
-      },
-    });
-  }
-
-  public async updateUser(
-    accessToken: string,
-    data: TUpdateUserRequest
-  ): Promise<TUpdateUserResponse> {
-    return await this.patch<TUpdateUserResponse, TUpdateUserRequest>(
+    return await this.post<TLogoutResponse, TLogoutRequest>(
       data,
-      '/auth/user',
-      {
-        headers: {
-          authorization: accessToken,
-        },
-      }
+      '/auth/logout',
+      {},
+      { auth: false }
     );
+  }
+
+  public async getUser(): Promise<TGetUserResponse> {
+    return await this.get<TGetUserResponse>('/auth/user');
+  }
+
+  public async updateUser(data: TUpdateUserRequest): Promise<TUpdateUserResponse> {
+    return await this.patch<TUpdateUserResponse, TUpdateUserRequest>(data, '/auth/user');
   }
 
   public async forgotPassword(
@@ -70,7 +71,9 @@ class AuthApi extends BaseApi {
   ): Promise<TForgotPasswordResponse> {
     return await this.post<TForgotPasswordResponse, TForgotPasswordRequest>(
       data,
-      '/password-reset'
+      '/password-reset',
+      {},
+      { auth: false }
     );
   }
 
@@ -79,7 +82,9 @@ class AuthApi extends BaseApi {
   ): Promise<TResetPasswordResponse> {
     return await this.post<TResetPasswordResponse, TResetPasswordRequest>(
       data,
-      '/password-reset/reset'
+      '/password-reset/reset',
+      {},
+      { auth: false }
     );
   }
 }
