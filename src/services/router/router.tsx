@@ -18,10 +18,15 @@ import {
 import { store } from '../store';
 import { fetchIngredientById, fetchIngredients } from '../ingredients/actions';
 import { setIngredientDetails } from '../ingredient-details/slice';
+import { checkUserAuth } from '../auth/actions';
+import { ProtectedRoute } from '@/components/protected-route';
 
 //#region Loaders
 const rootLoader = async () => {
-  await store.dispatch(fetchIngredients()).unwrap();
+  await Promise.all([
+    store.dispatch(checkUserAuth()).unwrap(),
+    store.dispatch(fetchIngredients()).unwrap(),
+  ]);
   return null;
 };
 
@@ -46,13 +51,25 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'feed', element: <FeedPage /> },
-      { path: 'login', element: <LoginPage /> },
-      { path: 'register', element: <RegisterPage /> },
-      { path: 'forgot-password', element: <ForgotPasswordPage /> },
-      { path: 'reset-password', element: <ResetPasswordPage /> },
+      {
+        path: 'login',
+        element: <ProtectedRoute anonymous element={<LoginPage />} />,
+      },
+      {
+        path: 'register',
+        element: <ProtectedRoute anonymous element={<RegisterPage />} />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ProtectedRoute anonymous element={<ForgotPasswordPage />} />,
+      },
+      {
+        path: 'reset-password',
+        element: <ProtectedRoute anonymous element={<ResetPasswordPage />} />,
+      },
       {
         path: 'profile',
-        element: <ProfilePage />,
+        element: <ProtectedRoute element={<ProfilePage />} />,
         children: [
           { index: true, element: <ProfileMainPage /> },
           { path: 'orders', element: <ProfileOrdersPage /> },

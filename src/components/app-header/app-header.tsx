@@ -7,6 +7,8 @@ import {
 import { NavLink } from 'react-router-dom';
 
 import styles from './app-header.module.scss';
+import { useAppSelector } from '@/services/hooks';
+import { selectIsAuthenticated, selectUser } from '@/services/auth/selectors';
 
 type TNavIconComponent = React.ComponentType<{
   type: 'primary' | 'secondary';
@@ -44,6 +46,11 @@ const HeaderNavLink = ({
 );
 
 export const AppHeader = (): React.JSX.Element => {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const user = useAppSelector(selectUser);
+  const userName = user?.name || 'Неизвестный пользователь';
+  const profileLabel = isAuthenticated ? userName : 'Войти';
+
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
@@ -63,7 +70,7 @@ export const AppHeader = (): React.JSX.Element => {
 
         <HeaderNavLink
           to="/profile"
-          label="Личный кабинет"
+          label={profileLabel}
           Icon={ProfileIcon}
           extraClassName={styles.linkPositionLast}
         />

@@ -1,4 +1,7 @@
+import { authStorage } from '@/utils';
 import type { TApiErrorResponse } from './types';
+
+const { getAccessToken, getRefreshToken, clearTokens, saveTokens } = authStorage;
 
 type TRefreshSuccessPayload = {
   success: true;
@@ -24,6 +27,7 @@ export abstract class BaseApi {
     return `${this.url}${endpoint}`;
   }
 
+  //#region requests
   protected async get<TResponse>(
     endpoint = '',
     init: RequestInit = {},
@@ -73,7 +77,9 @@ export abstract class BaseApi {
       options
     );
   }
+  //#endregion requests
 
+  //#region base
   private async request<TResponse>(
     endpoint = '',
     init: RequestInit = {},
@@ -86,11 +92,10 @@ export abstract class BaseApi {
     const headers = new Headers(init.headers);
 
     if (withAuth) {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = getAccessToken();
       if (accessToken) {
         headers.set('authorization', accessToken);
       }
-      // TODO Выход из приложения
     }
 
     const response = await fetch(endpointUrl, {
@@ -116,14 +121,29 @@ export abstract class BaseApi {
 
     return payload;
   }
+  //#endregion base
 
+  //#region refresh
   private async refreshTokens(): Promise<void> {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = getRefreshToken();
 
     if (!refreshToken) {
       throw new Error('Refresh token is missing');
     }
 
+    const response = await this.refreshTokensRequest(refreshToken);
+
+    if (!response.success || !this.isRefreshSuccessPayload(response)) {
+      clearTokens();
+      throw new Error(response.message || 'Token refresh failed');
+    }
+
+    saveTokens(response.accessToken, response.refreshToken);
+  }
+
+  private async refreshTokensRequest(
+    refreshToken: string
+  ): Promise<TRefreshSuccessPayload | TApiErrorResponse> {
     const response = await fetch(`${this.baseUrl}/auth/token`, {
       method: 'POST',
       headers: {
@@ -131,27 +151,20 @@ export abstract class BaseApi {
       },
       body: JSON.stringify({ token: refreshToken }),
     });
-
-    const payload = (await response.json()) as
-      | TRefreshSuccessPayload
-      | TApiErrorResponse;
-
-    if (!response.ok || !this.isRefreshSuccessPayload(payload)) {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      throw new Error(payload.message || 'Token refresh failed');
-    }
-
-    localStorage.setItem('accessToken', payload.accessToken);
-    localStorage.setItem('refreshToken', payload.refreshToken);
+    return (await response.json()) as TRefreshSuccessPayload | TApiErrorResponse;
   }
 
   private isRefreshSuccessPayload = (
     value: TRefreshSuccessPayload | TApiErrorResponse
-  ): value is TRefreshSuccessPayload =>
-    value.success === true &&
-    'accessToken' in value &&
-    'refreshToken' in value &&
-    typeof value.accessToken === 'string' &&
-    typeof value.refreshToken === 'string';
+  ): value is TRefreshSuccessPayload => {
+    return (
+      value.success === true &&
+      'accessToken' in value &&
+      'refreshToken' in value &&
+      typeof value.accessToken === 'string' &&
+      typeof value.refreshToken === 'string'
+    );
+  };
+
+  //#endregion
 }
