@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import {
   checkUserAuth,
+  forgotPassword,
   getUser,
   loginUser,
   logoutUser,
   registerUser,
+  resetPassword,
   updateUser,
 } from './actions';
 import type { TAuthState } from './types';
@@ -88,7 +90,29 @@ export const authSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = Boolean(action.payload);
         state.isAuthChecked = true;
+      })
+      //#endregion user
+
+      //#region password
+      .addCase(forgotPassword.pending, (state) => {
+        startLoading(state);
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        finishLoading(state);
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        setRequestError(state, action.payload ?? action.error.message);
+      })
+
+      .addCase(resetPassword.pending, (state) => {
+        startLoading(state);
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        finishLoading(state);
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        setRequestError(state, action.payload ?? action.error.message);
       });
-    //#endregion user
+    //#endregion password
   },
 });

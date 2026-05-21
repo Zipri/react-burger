@@ -35,7 +35,7 @@ export const RegisterPage = (): React.JSX.Element => {
         await dispatch(registerUser(values)).unwrap();
         reset();
       } catch {
-        console.error('Error login user');
+        console.error('Error register user');
       }
     },
     [dispatch, values, reset]
