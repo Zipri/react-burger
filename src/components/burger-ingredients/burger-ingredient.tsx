@@ -12,6 +12,8 @@ import { useConstructorIngredientDrag } from '@/components/burger-ingredients/ho
 import { addIngredientToConstructor } from '@/services/constructor/slice';
 import { useAppDispatch } from '@/services/hooks';
 import { openIngredientDetailsWithPreload } from '@/services/ingredient-details/actions';
+import { useLocation, useNavigate } from 'react-router-dom';
+import type { TNavigateOptionsState } from '@/services/router';
 
 type TBurgerIngredientProps = {
   ingredient: TIngredient;
@@ -23,6 +25,8 @@ export const BurgerIngredient = ({
   count,
 }: TBurgerIngredientProps): React.JSX.Element => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSelectIngredient = useCallback(() => {
     dispatch(addIngredientToConstructor(ingredient));
@@ -32,9 +36,13 @@ export const BurgerIngredient = ({
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
       event.stopPropagation();
+
       dispatch(openIngredientDetailsWithPreload(ingredient));
+      navigate(`/ingredients/${ingredient._id}`, {
+        state: { backgroundLocation: location } as TNavigateOptionsState,
+      });
     },
-    [dispatch, ingredient]
+    [dispatch, ingredient, navigate, location]
   );
 
   const { isDragging, setNodeRef } = useConstructorIngredientDrag(ingredient);

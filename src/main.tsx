@@ -7,12 +7,14 @@ import { Provider } from 'react-redux';
 
 import './index.scss';
 import { store } from '@/services/store';
+import { RouterProvider } from 'react-router-dom';
+import { router } from '@services/router';
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
   <DndProvider backend={HTML5Backend}>
     <Provider store={store}>
-      <App />
+      <RouterProvider router={router} />
     </Provider>
   </DndProvider>
   // </StrictMode>
