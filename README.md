@@ -1,38 +1,159 @@
-# Стартер на TypeScript для проекта Stellar Burger
+# Stellar Burger
 
-## Процедура создания коммита с проверками
+Учебный проект на React + TypeScript: конструктор бургеров с маршрутизацией, авторизацией, защищенными маршрутами и модальными окнами.
 
-При создании коммита автоматически запускаются проверка линтерами `stylelint`, `eslint` и форматирование `prettier`.
+## Технологии
 
-Если линтер обнаружит ошибки:
+- React
+- TypeScript
+- Redux Toolkit
+- React Router (`createBrowserRouter` + `RouterProvider`)
+- React DnD
+- SCSS Modules
+- Vite
 
-- Коммит создан не будет
-- Необходимо исправить все выявленные проблемы
-- Добавить исправленные файлы в индекс: `git add .`
-- Повторить коммит
+## Запуск
 
-**Рекомендация:**  
-Для предотвращения ошибок на этапе коммита предварительно выполните:  
-`npm run lint`. Это позволит выявить и исправить проблемы до создания коммита.
+Установить зависимости:
 
-Есть также команды для запуска проверок по отдельности:
-
-- `npm run eslint` - запускает проверку линтера и исправляет проблемы, которые можно исправить автоматически,
-- `npm run stylelint` - запускает проверку литера для файлов стилей и исправляет проблемы, которые можно исправить автоматически,
-- `npm run prettier` - исправляет ошибки форматирования кода.
-
-Можно добавить автозапуск этих команд при сохранении файла в вашей IDE.
-
-Для создания коммита рекомендуется запускать команду `npm run commit`. Она позволяет обеспечить соответствие описаний коммитов [общепринятым соглашениям](https://www.conventionalcommits.org/en/v1.0.0/).
-
-В проекте настроены алиасы, которые можно использовать при импорте модулей:
-
+```bash
+npm install
 ```
-	alias: {
-		'@': path.resolve(__dirname, './src'),
-		'@components': path.resolve(__dirname, './src/components'),
-		'@services': path.resolve(__dirname, './src/utils'),
-		'@pages': path.resolve(__dirname, './src/pages'),
-		'@utils': path.resolve(__dirname, './src/utils'),
-	},
+
+Запустить проект в dev-режиме:
+
+```bash
+npm run dev
 ```
+
+Собрать production-версию:
+
+```bash
+npm run build
+```
+
+Предпросмотр production-сборки:
+
+```bash
+npm run preview
+```
+
+## Скрипты
+
+- `npm run dev` - запуск dev-сервера
+- `npm run build` - сборка проекта
+- `npm run preview` - предпросмотр сборки
+- `npm run lint` - `stylelint` + `eslint` + `prettier`
+- `npm run eslint` - проверка и автоисправления JS/TS
+- `npm run stylelint` - проверка и автоисправления стилей
+- `npm run prettier` - форматирование файлов
+- `npm run test` - unit-тесты (Vitest)
+- `npm run e2e` - e2e-тесты (Playwright)
+- `npm run commit` - создание commit через Commitizen
+
+## Реализовано в Sprint 3
+
+- Маршруты:
+  - `/`
+  - `/feed`
+  - `/login`
+  - `/register`
+  - `/forgot-password`
+  - `/reset-password`
+  - `/profile`
+  - `/profile/orders`
+  - `/ingredients/:id`
+  - `*` (страница 404)
+- Вложенные маршруты профиля через `<Outlet />`
+- Открытие ингредиента:
+  - модальное окно при переходе с главной страницы
+  - отдельная страница при прямом переходе по URL
+- Авторизация и регистрация
+- Выход из аккаунта
+- Получение и обновление профиля пользователя
+- Восстановление и сброс пароля
+- Защищенные маршруты (`ProtectedRoute`)
+- Перенаправление на исходный защищенный маршрут после логина
+- Заказ только для авторизованного пользователя
+- Обновление токенов при `401` и повтор исходного запроса
+
+## Структура проекта
+
+```text
+src/
+  api/
+    base/
+    ingredients/
+    orders/
+    auth/
+  components/
+    app/
+    app-header/
+    burger-constructor/
+    burger-ingredients/
+    modal/
+    modal-overlay/
+    modals/
+    protected-route/
+    common/
+  pages/
+    home/
+    login/
+    register/
+    forgot-password/
+    reset-password/
+    profile/
+    profile-main/
+    profile-orders/
+    feed/
+    ingredient-details/
+    not-found/
+    error/
+  services/
+    auth/
+    constructor/
+    ingredient-details/
+    ingredients/
+    order/
+    router/
+    common/
+    store.ts
+    root-reducer.ts
+  utils/
+    auth-storage.ts
+    hooks/
+```
+
+## API
+
+Базовый URL API:
+
+`https://new-stellarburgers.education-services.ru/api`
+
+Используемые группы запросов:
+
+- ингредиенты
+- заказы
+- auth (`register`, `login`, `logout`, `token`)
+- профиль пользователя (`/auth/user`)
+- восстановление пароля (`/password-reset`, `/password-reset/reset`)
+
+## Алиасы импортов
+
+Основные алиасы:
+
+- `@/*` -> `src/*`
+- `@api/*` -> `src/api/*`
+- `@components/*` -> `src/components/*`
+- `@pages/*` -> `src/pages/*`
+- `@services/*` -> `src/services/*`
+- `@utils/*` -> `src/utils/*`
+- `@styles/*` -> `src/styles/*`
+
+## Проверки перед сдачей
+
+1. `npm run lint`
+2. `npm run build`
+3. Проверить запуск приложения без ошибок (`npm run dev`)
+4. Проверить маршруты и сценарии авторизации
+5. Создать pull request из `sprint3` в `main`
