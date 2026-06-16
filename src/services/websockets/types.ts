@@ -17,4 +17,5 @@ export type TWsActions = {
 export type TCreateWebSocketMiddlewareOptions = {
   actions: TWsActions;
   getUrl: () => string | null;
+  refreshToken?: () => Promise<boolean>;
 };

@@ -3,22 +3,38 @@ import type { Middleware } from '@reduxjs/toolkit';
 import type { TOrdersFeedResponse } from '@/api/orders/types';
 import type { TCreateWebSocketMiddlewareOptions } from './types';
 
+type TWsErrorResponse = {
+  success: false;
+  message?: string;
+};
+
+type TWsResponse = TOrdersFeedResponse | TWsErrorResponse;
+
+const INVALID_TOKEN_MESSAGE = 'Invalid or missing token';
+
 export const createWebSocketMiddleware = ({
   actions,
   getUrl,
+  refreshToken,
 }: TCreateWebSocketMiddlewareOptions): Middleware => {
   let socket: WebSocket | null = null;
+  let isRefreshingToken = false;
 
-  return (store) => (next) => (action) => {
-    if (actions.connect.match(action)) {
+  const closeSocket = () => {
+    socket?.close();
+    socket = null;
+  };
+
+  return (store) => {
+    const connectSocket = () => {
       const url = getUrl();
 
       if (!url) {
         store.dispatch(actions.onError('WebSocket URL is empty'));
-        return next(action);
+        return;
       }
 
-      socket?.close();
+      closeSocket();
       socket = new WebSocket(url);
 
       socket.onopen = () => {
@@ -33,11 +49,28 @@ export const createWebSocketMiddleware = ({
         store.dispatch(actions.onError('Ошибка соединения с WebSocket'));
       };
 
-      socket.onmessage = (event) => {
+      socket.onmessage = async (event) => {
         try {
-          const data = JSON.parse(event.data as string) as TOrdersFeedResponse;
+          const data = JSON.parse(event.data as string) as TWsResponse;
 
           if (!data.success) {
+            if (
+              data.message === INVALID_TOKEN_MESSAGE &&
+              refreshToken &&
+              !isRefreshingToken
+            ) {
+              isRefreshingToken = true;
+
+              const isTokenRefreshed = await refreshToken();
+
+              isRefreshingToken = false;
+
+              if (isTokenRefreshed) {
+                connectSocket();
+                return;
+              }
+            }
+
             store.dispatch(
               actions.onError(data.message ?? 'Ошибка ответа от WebSocket')
             );
@@ -49,13 +82,18 @@ export const createWebSocketMiddleware = ({
           store.dispatch(actions.onError('Ошибка парсинга сообщения от WebSocket'));
         }
       };
-    }
+    };
 
-    if (actions.disconnect.match(action)) {
-      socket?.close();
-      socket = null;
-    }
+    return (next) => (action) => {
+      if (actions.connect.match(action)) {
+        connectSocket();
+      }
 
-    return next(action);
+      if (actions.disconnect.match(action)) {
+        closeSocket();
+      }
+
+      return next(action);
+    };
   };
 };
