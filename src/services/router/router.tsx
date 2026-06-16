@@ -9,6 +9,7 @@ import {
   IngredientDetailsPage,
   LoginPage,
   NotFoundPage,
+  OrderInfoPage,
   ProfileMainPage,
   ProfileOrdersPage,
   ProfilePage,
@@ -66,6 +67,11 @@ export const router = createBrowserRouter([
       {
         path: 'reset-password',
         element: <ProtectedRoute anonymous element={<ResetPasswordPage />} />,
+      },
+      { path: 'feed/:id', element: <OrderInfoPage /> },
+      {
+        path: 'profile/orders/:id',
+        element: <ProtectedRoute element={<OrderInfoPage />} />,
       },
       {
         path: 'profile',

@@ -119,6 +119,13 @@ export abstract class BaseApi {
       return await this.request<TResponse>(endpoint, init, options, true);
     }
 
+    const contentType = response.headers.get('content-type');
+    const isJson = contentType?.includes('application/json');
+
+    if (!isJson) {
+      throw new Error(`API returned non-JSON response: ${response.status}`);
+    }
+
     const payload = (await response.json()) as TResponse & TApiErrorResponse;
 
     if (!response.ok) {

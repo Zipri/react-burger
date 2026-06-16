@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, type ReactNode } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { Page } from '@/components/common';
@@ -10,7 +10,11 @@ import styles from './profile.module.scss';
 const getNavLinkClassName = ({ isActive }: { isActive: boolean }): string =>
   `${styles.navLink} text text_type_main-medium ${isActive ? styles.navLinkActive : ''}`;
 
-export const ProfilePage = (): React.JSX.Element => {
+type TProfilePageProps = {
+  children?: ReactNode;
+};
+
+export const ProfilePage = ({ children }: TProfilePageProps): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,9 +69,7 @@ export const ProfilePage = (): React.JSX.Element => {
           )}
         </nav>
 
-        <section className={styles.outlet}>
-          <Outlet />
-        </section>
+        <section className={styles.outlet}>{children ?? <Outlet />}</section>
       </main>
     </Page>
   );
