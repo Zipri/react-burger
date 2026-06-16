@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { Page } from '@/components/common';
 import { logoutUser } from '@/services/auth/actions';
@@ -13,6 +13,14 @@ const getNavLinkClassName = ({ isActive }: { isActive: boolean }): string =>
 export const ProfilePage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentTab: 'profile' | 'orders' | null = useMemo(() => {
+    const path = location.pathname;
+    if (path === '/profile') return 'profile';
+    if (path === '/profile/orders') return 'orders';
+    return null as 'profile' | 'orders' | null;
+  }, [location.pathname]);
 
   const handleLogout = useCallback(async () => {
     try {
@@ -48,11 +56,13 @@ export const ProfilePage = (): React.JSX.Element => {
             </li>
           </ul>
 
-          <p className={`${styles.hint} text text_type_main-default`}>
-            В этом разделе вы можете
-            <br />
-            изменить свои персональные данные
-          </p>
+          {currentTab === 'profile' && (
+            <p className={`${styles.hint} text text_type_main-default`}>
+              В этом разделе вы можете
+              <br />
+              изменить свои персональные данные
+            </p>
+          )}
         </nav>
 
         <section className={styles.outlet}>

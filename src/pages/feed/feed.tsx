@@ -1,9 +1,55 @@
-import { Page } from '@/components/common';
+import { useEffect } from 'react';
 
-export const FeedPage = (): React.JSX.Element => (
-  <Page title="Лента заказов">
-    <main className="pl-5 pr-5">
-      <p className="text text_type_main-default">Страница в разработке</p>
-    </main>
-  </Page>
-);
+import { Page } from '@/components/common';
+import { OrderCard } from '@/components/order-card';
+import { FeedStats } from './feed-stats';
+import {
+  feedActions,
+  selectFeedDoneOrderNumberColumns,
+  selectFeedError,
+  selectFeedInProgressOrderNumberColumns,
+  selectFeedOrders,
+  selectFeedTotal,
+  selectFeedTotalToday,
+} from '@/services/feed';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+
+import styles from './feed.module.scss';
+
+export const FeedPage = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+
+  const orders = useAppSelector(selectFeedOrders);
+  const total = useAppSelector(selectFeedTotal);
+  const totalToday = useAppSelector(selectFeedTotalToday);
+  const error = useAppSelector(selectFeedError);
+  const doneColumns = useAppSelector(selectFeedDoneOrderNumberColumns);
+  const inProgressColumns = useAppSelector(selectFeedInProgressOrderNumberColumns);
+
+  useEffect(() => {
+    dispatch(feedActions.connect());
+
+    return () => {
+      dispatch(feedActions.disconnect());
+    };
+  }, [dispatch]);
+
+  return (
+    <Page title="Лента заказов" error={error}>
+      <main className={styles.content}>
+        <section className={styles.orders}>
+          {orders.map((order) => (
+            <OrderCard key={order._id} order={order} to={`/feed/${order.number}`} />
+          ))}
+        </section>
+
+        <FeedStats
+          doneColumns={doneColumns}
+          inProgressColumns={inProgressColumns}
+          total={total}
+          totalToday={totalToday}
+        />
+      </main>
+    </Page>
+  );
+};

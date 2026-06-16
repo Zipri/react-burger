@@ -1,0 +1,20 @@
+.content {
+  display: grid;
+  grid-template-columns: 600px 580px;
+  gap: 60px;
+  width: 100%;
+  max-width: 1260px;
+  min-height: 0;
+  height: calc(100vh - 188px);
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.orders {
+  min-height: 0;
+  height: 100%;
+  padding-right: 8px;
+  overflow-y: auto;
+}
