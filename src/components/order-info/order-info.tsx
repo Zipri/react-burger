@@ -30,10 +30,11 @@ export const OrderInfoContent = ({
 }: TOrderInfoContentProps): React.JSX.Element => {
   const { id } = useParams();
   const orderNumber = Number(id);
+  const hasValidOrderNumber = Number.isFinite(orderNumber);
 
   const ingredients = useAppSelector(selectIngredientsItems);
   const orderFromStore = useAppSelector((state) => {
-    if (!Number.isFinite(orderNumber)) return undefined;
+    if (!hasValidOrderNumber) return undefined;
 
     return (
       selectFeedOrderByNumber(state, orderNumber) ??
@@ -48,24 +49,41 @@ export const OrderInfoContent = ({
   const order = orderFromStore ?? loadedOrder;
 
   useEffect(() => {
-    if (!Number.isFinite(orderNumber) || orderFromStore) {
+    setLoadedOrder(null);
+    setError(null);
+
+    if (!hasValidOrderNumber || orderFromStore) {
+      setIsLoading(false);
       return;
     }
 
+    let isActualRequest = true;
+
     setIsLoading(true);
-    setError(null);
 
     ordersApi
       .getOrderByNumber(orderNumber)
-      .then(setLoadedOrder)
+      .then((orderData) => {
+        if (isActualRequest) {
+          setLoadedOrder(orderData);
+        }
+      })
       .catch((requestError) => {
-        setError(
-          requestError instanceof Error ? requestError.message : 'Заказ не найден'
-        );
+        if (isActualRequest) {
+          setError(
+            requestError instanceof Error ? requestError.message : 'Заказ не найден'
+          );
+        }
       })
       .finally(() => {
-        setIsLoading(false);
+        if (isActualRequest) {
+          setIsLoading(false);
+        }
       });
+
+    return () => {
+      isActualRequest = false;
+    };
   }, [orderNumber, orderFromStore]);
 
   const orderIngredients = useMemo(
@@ -78,7 +96,7 @@ export const OrderInfoContent = ({
     [order, ingredients]
   );
 
-  if (isLoading) {
+  if (isLoading || (!order && !error && hasValidOrderNumber)) {
     return <Preloader />;
   }
 
