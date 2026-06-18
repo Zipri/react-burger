@@ -1,5 +1,6 @@
 import { authStorage } from '@/utils';
 import type { TApiErrorResponse } from './types';
+import { API_BASE_URL } from './constants';
 
 const { getAccessToken, getRefreshToken, clearTokens, saveTokens } = authStorage;
 
@@ -16,7 +17,7 @@ type TRequestOptions = {
 };
 
 export abstract class BaseApi {
-  private readonly baseUrl = 'https://new-stellarburgers.education-services.ru/api';
+  private readonly baseUrl = API_BASE_URL;
   protected readonly url: string;
 
   constructor(url: string) {
@@ -116,6 +117,13 @@ export abstract class BaseApi {
     if (response.status === 401 && withAuth && !isSecondTry) {
       await this.refreshTokens();
       return await this.request<TResponse>(endpoint, init, options, true);
+    }
+
+    const contentType = response.headers.get('content-type');
+    const isJson = contentType?.includes('application/json');
+
+    if (!isJson) {
+      throw new Error(`API returned non-JSON response: ${response.status}`);
     }
 
     const payload = (await response.json()) as TResponse & TApiErrorResponse;

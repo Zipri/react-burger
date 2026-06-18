@@ -1,0 +1,78 @@
+.card {
+    display: block;
+    padding: 24px;
+    border-radius: 40px;
+    background: var(--background);
+    color: var(--text-primary-color);
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+  
+  .card + .card {
+    margin-top: 16px;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  
+  .date {
+    color: var(--text-inactive-color);
+  }
+  
+  .status {
+    color: var(--text-primary-color);
+  }
+  
+  .statusDone {
+    color: var(--colors-interface-success);
+  }
+  
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  
+  .ingredients {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .ingredient {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin-right: -16px;
+    border: 2px solid #801ab2;
+    border-radius: 50%;
+    background: var(--background-alt);
+    overflow: hidden;
+  }
+  
+  .ingredient img {
+    width: 112px;
+    height: 56px;
+    object-fit: cover;
+    transform: translateX(-24px);
+  }
+  
+  .more {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(28 28 33 / 60%);
+  }
+  
+  .price {
+    display: flex;
+    align-items: center;
+  }

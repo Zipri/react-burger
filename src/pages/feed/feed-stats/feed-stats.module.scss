@@ -1,0 +1,40 @@
+.stats {
+  width: 580px;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.statuses {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px;
+  max-height: 220px;
+  overflow: hidden;
+}
+
+.columns {
+  display: flex;
+  gap: 24px;
+  max-height: 150px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doneNumber {
+  color: var(--colors-interface-success);
+}
+
+.total {
+  line-height: 0.85;
+  text-shadow:
+    0 0 16px rgb(51 51 255 / 25%),
+    0 0 8px rgb(51 51 255 / 25%),
+    0 4px 32px rgb(51 51 255 / 50%);
+}
