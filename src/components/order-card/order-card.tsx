@@ -2,13 +2,14 @@ import { CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import type { TFeedOrder } from '@/api/orders/types';
-import { selectIngredientsItems } from '@/services/ingredients/selectors';
-import { useAppSelector } from '@/services/hooks';
-import { getOrderIngredients, getOrderPrice, ORDER_STATUS_TEXT } from '@/utils';
+import { EllipsisText } from '../common';
 
 import styles from './order-card.module.scss';
-import { EllipsisText } from '../common';
+
+import type { TFeedOrder } from '@/api/orders/types';
+import { useAppSelector } from '@/services/hooks';
+import { selectIngredientsItems } from '@/services/ingredients/selectors';
+import { getOrderIngredients, getOrderPrice, ORDER_STATUS_TEXT } from '@/utils';
 
 type TOrderCardProps = {
   order: TFeedOrder;

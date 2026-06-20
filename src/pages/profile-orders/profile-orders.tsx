@@ -1,14 +1,14 @@
 import { useEffect, useMemo } from 'react';
 
+import styles from './profile-orders.module.scss';
+
 import { OrderCard } from '@/components/order-card';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import {
   profileOrdersActions,
   selectProfileOrdersError,
   selectProfileOrdersItems,
 } from '@/services/profile-orders';
-import { useAppDispatch, useAppSelector } from '@/services/hooks';
-
-import styles from './profile-orders.module.scss';
 
 export const ProfileOrdersPage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();

@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './burger-constructor.module.scss';
 
+import { selectIsAuthenticated } from '@/services/auth/selectors';
 import {
   selectConstructorCanOrder,
   selectConstructorTotalPrice,
@@ -11,7 +12,6 @@ import {
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { createOrder } from '@/services/order/actions';
 import { selectOrderLoading } from '@/services/order/selectors';
-import { selectIsAuthenticated } from '@/services/auth/selectors';
 
 export const BurgerFooter = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
@@ -39,6 +39,7 @@ export const BurgerFooter = (): React.JSX.Element => {
         <CurrencyIcon type="primary" />
       </div>
       <Button
+        data-testid="place-order-button"
         htmlType="button"
         type="primary"
         size="large"

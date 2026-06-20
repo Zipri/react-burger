@@ -1,11 +1,12 @@
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import styles from './login.module.scss';
 
 import { Page } from '@/components/common';
 import { loginUser } from '@/services/auth/actions';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
-import styles from './login.module.scss';
 import { useForm } from '@/utils/hooks';
 
 type TLoginForm = {

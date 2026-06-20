@@ -1,7 +1,7 @@
-import type { TFeedOrder } from '@/api/orders/types';
-
-import type { RootState } from '@/services/store';
 import type { TFeedState } from './slice';
+
+import type { TFeedOrder } from '@/api/orders/types';
+import type { RootState } from '@/services/store';
 import { getOrderNumberColumns } from '@/utils/helpers/orders';
 
 export const selectFeed = (state: RootState): TFeedState => state.feed;

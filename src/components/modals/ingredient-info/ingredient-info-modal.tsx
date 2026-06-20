@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { IngredientInfoContent } from './ingredient-info';
 
@@ -9,7 +10,6 @@ import {
   selectIngredientDetailsLoading,
 } from '@/services/ingredient-details/selectors';
 import { closeIngredientDetails } from '@/services/ingredient-details/slice';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 export const IngredientInfoModal = (): React.JSX.Element => {
   const dispatch = useAppDispatch();

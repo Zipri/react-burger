@@ -1,7 +1,7 @@
-import type { TFeedOrder } from '@/api/orders/types';
-
-import type { RootState } from '@/services/store';
 import type { TProfileOrdersState } from './slice';
+
+import type { TFeedOrder } from '@/api/orders/types';
+import type { RootState } from '@/services/store';
 
 export const selectProfileOrders = (state: RootState): TProfileOrdersState =>
   state.profileOrders;

@@ -2,16 +2,16 @@ import { CurrencyIcon, Preloader } from '@krgaa/react-developer-burger-ui-compon
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import styles from './order-info.module.scss';
+
 import { ordersApi } from '@/api/orders';
 import type { TFeedOrder } from '@/api/orders/types';
 import { EllipsisText } from '@/components/common';
 import { selectFeedOrderByNumber } from '@/services/feed';
-import { selectProfileOrderByNumber } from '@/services/profile-orders';
-import { selectIngredientsItems } from '@/services/ingredients/selectors';
 import { useAppSelector } from '@/services/hooks';
+import { selectIngredientsItems } from '@/services/ingredients/selectors';
+import { selectProfileOrderByNumber } from '@/services/profile-orders';
 import { getOrderIngredientsWithCount, getOrderPrice, ORDER_STATUS_TEXT } from '@/utils';
-
-import styles from './order-info.module.scss';
 
 type TOrderInfoContentProps = {
   view?: 'modal' | 'page';

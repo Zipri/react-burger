@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
+import styles from './order-info.module.scss';
+
 import { Page } from '@/components/common';
 import { OrderInfoContent } from '@/components/order-info';
 import { feedActions } from '@/services/feed';
 import { useAppDispatch } from '@/services/hooks';
-
-import styles from './order-info.module.scss';
 
 export const OrderInfoPage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();

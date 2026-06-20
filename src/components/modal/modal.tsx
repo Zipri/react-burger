@@ -50,7 +50,12 @@ export const Modal = ({
       <section className={styles.modal} role="dialog" aria-modal="true">
         <header className={styles.header}>
           {title ? <h2 className="text text_type_main-large">{title}</h2> : <span />}
-          <button type="button" className={styles.closeButton} onClick={onClose}>
+          <button
+            type="button"
+            data-testid="modal-close-button"
+            className={styles.closeButton}
+            onClick={onClose}
+          >
             <CloseIcon type="primary" />
           </button>
         </header>

@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 
+import { FeedStats } from './feed-stats';
+import styles from './feed.module.scss';
+
 import { Page } from '@/components/common';
 import { OrderCard } from '@/components/order-card';
-import { FeedStats } from './feed-stats';
 import {
   feedActions,
   selectFeedDoneOrderNumberColumns,
@@ -13,8 +15,6 @@ import {
   selectFeedTotalToday,
 } from '@/services/feed';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
-
-import styles from './feed.module.scss';
 
 export const FeedPage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();

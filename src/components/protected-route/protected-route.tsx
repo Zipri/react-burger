@@ -1,9 +1,9 @@
+import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { Navigate, useLocation } from 'react-router-dom';
 import type { Location } from 'react-router-dom';
-import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 
-import { useAppSelector } from '@/services/hooks';
 import { selectIsAuthChecked, selectIsAuthenticated } from '@/services/auth';
+import { useAppSelector } from '@/services/hooks';
 
 type TProtectedRouteProps = {
   anonymous?: boolean;

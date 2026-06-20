@@ -1,6 +1,12 @@
-import { createBrowserRouter, type LoaderFunctionArgs } from 'react-router-dom';
-
 import { App } from '@components/app/app';
+import { createHashRouter, type LoaderFunctionArgs } from 'react-router-dom';
+
+import { checkUserAuth } from '../auth/actions';
+import { setIngredientDetails } from '../ingredient-details/slice';
+import { fetchIngredientById, fetchIngredients } from '../ingredients/actions';
+import { store } from '../store';
+
+import { ProtectedRoute } from '@/components/protected-route';
 import {
   ErrorPage,
   FeedPage,
@@ -16,11 +22,6 @@ import {
   RegisterPage,
   ResetPasswordPage,
 } from '@/pages';
-import { store } from '../store';
-import { fetchIngredientById, fetchIngredients } from '../ingredients/actions';
-import { setIngredientDetails } from '../ingredient-details/slice';
-import { checkUserAuth } from '../auth/actions';
-import { ProtectedRoute } from '@/components/protected-route';
 
 //#region Loaders
 const rootLoader = async () => {
@@ -43,7 +44,7 @@ const ingredientDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
 //#endregion Loaders
 
 //#region Routes
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: '/',
     element: <App />,

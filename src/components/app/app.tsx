@@ -5,10 +5,10 @@ import { OrderInfoModal } from '@components/modals/order-info';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { matchPath, Outlet, useLocation, useNavigation } from 'react-router-dom';
 
+import styles from './app.module.css';
+
 import { FeedPage, HomePage, ProfileOrdersPage, ProfilePage } from '@/pages';
 import type { TNavigateOptionsState } from '@/services/router';
-
-import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
   const navigation = useNavigation();

@@ -3,9 +3,9 @@ import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredi
 
 import styles from './home.module.scss';
 
+import { Page } from '@/components/common';
 import { useAppSelector } from '@/services/hooks';
 import { selectIngredientsError } from '@/services/ingredients/selectors';
-import { Page } from '@/components/common';
 
 export const HomePage = (): React.JSX.Element => {
   const error = useAppSelector(selectIngredientsError);
