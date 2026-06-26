@@ -21,6 +21,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
     <section className={styles.burger_constructor}>
       <div
         ref={setNodeRef}
+        data-testid="constructor-drop-zone"
         className={`${styles.drop_area} ${isOver && canDrop ? styles.drop_active : ''}`}
       >
         {bun ? (

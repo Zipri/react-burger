@@ -1,5 +1,6 @@
-import type { RootState } from '@/services/store';
 import type { TAuthState } from './types';
+
+import type { RootState } from '@/services/store';
 
 export const selectAuth = (state: RootState): TAuthState => state.auth;
 

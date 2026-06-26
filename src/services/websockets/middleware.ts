@@ -1,7 +1,8 @@
 import type { Middleware } from '@reduxjs/toolkit';
 
-import type { TOrdersFeedResponse } from '@/api/orders/types';
 import type { TCreateWebSocketMiddlewareOptions } from './types';
+
+import type { TOrdersFeedResponse } from '@/api/orders/types';
 
 type TWsErrorResponse = {
   success: false;

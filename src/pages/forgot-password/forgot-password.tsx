@@ -2,12 +2,12 @@ import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import styles from './forgot-password.module.scss';
+
 import { Page } from '@/components/common';
 import { forgotPassword } from '@/services/auth/actions';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { useForm } from '@/utils/hooks';
-
-import styles from './forgot-password.module.scss';
 
 type TForgotPasswordForm = {
   email: string;

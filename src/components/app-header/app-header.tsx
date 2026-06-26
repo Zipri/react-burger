@@ -7,8 +7,9 @@ import {
 import { NavLink } from 'react-router-dom';
 
 import styles from './app-header.module.scss';
-import { useAppSelector } from '@/services/hooks';
+
 import { selectIsAuthenticated, selectUser } from '@/services/auth/selectors';
+import { useAppSelector } from '@/services/hooks';
 
 type TNavIconComponent = React.ComponentType<{
   type: 'primary' | 'secondary';

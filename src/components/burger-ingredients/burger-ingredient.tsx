@@ -4,6 +4,7 @@ import {
   InfoIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './burger-ingredients.module.scss';
 
@@ -12,7 +13,6 @@ import { useConstructorIngredientDrag } from '@/components/burger-ingredients/ho
 import { addIngredientToConstructor } from '@/services/constructor/slice';
 import { useAppDispatch } from '@/services/hooks';
 import { openIngredientDetailsWithPreload } from '@/services/ingredient-details/actions';
-import { useLocation, useNavigate } from 'react-router-dom';
 import type { TNavigateOptionsState } from '@/services/router';
 
 type TBurgerIngredientProps = {
@@ -51,11 +51,13 @@ export const BurgerIngredient = ({
     <li
       ref={setNodeRef}
       key={ingredient._id}
+      data-testid={`ingredient-card-${ingredient._id}`}
       className={styles.ingredient_item}
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       <button
         type="button"
+        data-testid={`ingredient-info-button-${ingredient._id}`}
         className={styles.detail_button}
         onClick={handleOpenIngredientDetails}
       >
@@ -63,6 +65,7 @@ export const BurgerIngredient = ({
       </button>
       <button
         type="button"
+        data-testid={`ingredient-add-button-${ingredient._id}`}
         className={styles.ingredient_button}
         onClick={handleSelectIngredient}
       >

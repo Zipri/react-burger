@@ -2,13 +2,13 @@ import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
+import styles from './reset-password.module.scss';
+
 import { Page } from '@/components/common';
 import { resetPassword } from '@/services/auth/actions';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { authStorage } from '@/utils';
 import { useForm } from '@/utils/hooks';
-
-import styles from './reset-password.module.scss';
 
 type TResetPasswordForm = {
   password: string;

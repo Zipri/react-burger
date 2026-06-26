@@ -1,11 +1,11 @@
 import { useCallback, useMemo, type ReactNode } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import styles from './profile.module.scss';
+
 import { Page } from '@/components/common';
 import { logoutUser } from '@/services/auth/actions';
 import { useAppDispatch } from '@/services/hooks';
-
-import styles from './profile.module.scss';
 
 const getNavLinkClassName = ({ isActive }: { isActive: boolean }): string =>
   `${styles.navLink} text text_type_main-medium ${isActive ? styles.navLinkActive : ''}`;

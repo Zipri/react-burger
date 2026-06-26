@@ -1,4 +1,3 @@
-import { BaseApi } from '@/api/base';
 import type {
   TForgotPasswordRequest,
   TForgotPasswordResponse,
@@ -16,6 +15,8 @@ import type {
   TUpdateUserRequest,
   TUpdateUserResponse,
 } from './types';
+
+import { BaseApi } from '@/api/base';
 
 class AuthApi extends BaseApi {
   constructor() {

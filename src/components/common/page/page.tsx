@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from './page.module.scss';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
+import React from 'react';
+
+import styles from './page.module.scss';
 
 type PageProps = {
   children: React.ReactNode;

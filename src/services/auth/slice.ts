@@ -11,6 +11,7 @@ import {
   updateUser,
 } from './actions';
 import type { TAuthState } from './types';
+
 import {
   finishLoading,
   initialRequestState,

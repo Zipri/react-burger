@@ -1,6 +1,7 @@
-import { authStorage } from '@/utils';
-import type { TApiErrorResponse } from './types';
 import { API_BASE_URL } from './constants';
+import type { TApiErrorResponse } from './types';
+
+import { authStorage } from '@/utils';
 
 const { getAccessToken, getRefreshToken, clearTokens, saveTokens } = authStorage;
 

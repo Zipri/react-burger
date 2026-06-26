@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { WS_BASE_URL } from '@/api/base';
-import { authStorage } from '@/utils';
-
 import { feedActions } from './feed';
 import { profileOrdersActions } from './profile-orders';
 import { rootReducer } from './root-reducer';
 import { createWebSocketMiddleware } from './websockets/middleware';
+
 import { authApi } from '@/api/auth';
+import { WS_BASE_URL } from '@/api/base';
+import { authStorage } from '@/utils';
 
 const feedMiddleware = createWebSocketMiddleware({
   actions: feedActions,

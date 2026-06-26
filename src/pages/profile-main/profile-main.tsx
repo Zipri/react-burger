@@ -1,12 +1,12 @@
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useEffect, useMemo } from 'react';
 
+import styles from './profile-main.module.scss';
+
 import { updateUser } from '@/services/auth/actions';
 import { selectAuthLoading, selectUser } from '@/services/auth/selectors';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { useForm } from '@/utils/hooks';
-
-import styles from './profile-main.module.scss';
 
 type TProfileForm = {
   name: string;
